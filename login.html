@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSphere Pro | Login</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@300;400;500&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <style>
+        .login-container {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-left {
+            flex: 1;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: var(--space-12);
+            color: var(--white);
+            display: none;
+        }
+        
+        @media (min-width: 1024px) {
+            .login-left {
+                display: flex;
+            }
+        }
+        
+        .login-left::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><path fill="rgba(99,102,241,0.05)" d="M0,500Q0,250,250,250Q500,250,500,500Q500,750,750,750Q1000,750,1000,500L1000,1000L0,1000Z"/></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .login-right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-8) var(--space-4);
+            background: var(--light);
+        }
+        
+        .dark .login-right {
+            background: var(--dark-bg);
+        }
+        
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+            background: var(--white);
+            border-radius: var(--radius-2xl);
+            padding: var(--space-10) var(--space-8);
+            box-shadow: var(--shadow-2xl);
+            animation: slideUp 0.6s ease-out;
+        }
+        
+        .dark .login-card {
+            background: var(--dark-surface);
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: var(--space-8);
+        }
+        
+        .login-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-3);
+            margin-bottom: var(--space-4);
+        }
+        
+        .login-logo i {
+            font-size: 2.5rem;
+            color: var(--primary);
+        }
+        
+        .login-title {
+            font-size: var(--text-3xl);
+            font-weight: 700;
+            margin-bottom: var(--space-2);
+        }
+        
+        .login-subtitle {
+            color: var(--gray-500);
+            font-size: var(--text-lg);
+        }
+        
+        .dark .login-subtitle {
+            color: var(--gray-400);
+        }
+        
+        .login-form .form-group {
+            margin-bottom: var(--space-6);
+        }
+        
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-6);
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+        
+        .forgot-password {
+            color: var(--primary);
+            font-size: var(--text-sm);
+            font-weight: 500;
+        }
+        
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+        
+        .login-btn {
+            width: 100%;
+            margin-bottom: var(--space-6);
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: var(--space-6) 0;
+            color: var(--gray-400);
+        }
+        
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--gray-300);
+        }
+        
+        .divider span {
+            padding: 0 var(--space-4);
+            font-size: var(--text-sm);
+        }
+        
+        .register-link {
+            text-align: center;
+            margin-top: var(--space-6);
+            color: var(--gray-600);
+        }
+        
+        .dark .register-link {
+            color: var(--gray-400);
+        }
+        
+        .register-link a {
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            padding: var(--space-3) var(--space-4);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-4);
+            display: none;
+            align-items: center;
+            gap: var(--space-2);
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        .error-message.show {
+            display: flex;
+        }
+        
+        .success-message {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: var(--accent);
+            padding: var(--space-3) var(--space-4);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-4);
+            display: none;
+            align-items: center;
+            gap: var(--space-2);
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        .success-message.show {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <!-- Left Side (Branding) -->
+        <div class="login-left">
+            <div class="login-left-content" style="position: relative; z-index: 1;">
+                <div class="login-brand">
+                    <div class="logo-3d-container">
+                        <div class="logo-3d">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="glow-effect"></div>
+                    </div>
+                    <h1 class="gradient-text" style="font-size: var(--text-5xl); margin: var(--space-6) 0;">EduSphere<span class="pro-badge">Pro</span></h1>
+                    <p class="splash-subtitle" style="font-size: var(--text-xl);">Student Learning Portal</p>
+                </div>
+                
+                <div class="login-features" style="margin-top: var(--space-12);">
+                    <h3 style="margin-bottom: var(--space-6); font-size: var(--text-2xl);">Why EduSphere Pro?</h3>
+                    <div class="features-list">
+                        <div class="feature-item" style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-4);">
+                            <i class="fas fa-graduation-cap" style="color: var(--primary); font-size: 1.25rem;"></i>
+                            <span>Stream-based learning paths</span>
+                        </div>
+                        <div class="feature-item" style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-4);">
+                            <i class="fas fa-chart-line" style="color: var(--primary); font-size: 1.25rem;"></i>
+                            <span>Personalized progress tracking</span>
+                        </div>
+                        <div class="feature-item" style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-4);">
+                            <i class="fas fa-users" style="color: var(--primary); font-size: 1.25rem;"></i>
+                            <span>Connect with class teachers</span>
+                        </div>
+                        <div class="feature-item" style="display: flex; align-items: center; gap: var(--space-3);">
+                            <i class="fas fa-rocket" style="color: var(--primary); font-size: 1.25rem;"></i>
+                            <span>Accelerate your learning journey</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="login-testimonial" style="margin-top: var(--space-12); padding: var(--space-6); background: rgba(255,255,255,0.05); border-radius: var(--radius-xl);">
+                    <p style="font-style: italic; margin-bottom: var(--space-3);">"EduSphere Pro transformed how I study. Everything I need is in one place!"</p>
+                    <div class="testimonial-author">
+                        <strong>Sarah Johnson</strong>
+                        <span style="display: block; font-size: var(--text-sm); color: var(--gray-400);">Class 12A Student</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Side (Login Form) -->
+        <div class="login-right">
+            <div class="login-card">
+                <!-- Error/Success Messages -->
+                <div id="loginError" class="error-message">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>Invalid email or password</span>
+                </div>
+                
+                <div id="loginSuccess" class="success-message">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Registration successful! Please login.</span>
+                </div>
+                
+                <!-- Header -->
+                <div class="login-header">
+                    <div class="login-logo">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h1 class="login-title">Welcome Back</h1>
+                    <p class="login-subtitle">Sign in to continue your journey</p>
+                </div>
+                
+                <!-- Login Form -->
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" id="email" class="form-input" placeholder="student@example.com" required>
+                        <div class="form-error" id="emailError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+                        <div class="form-error" id="passwordError"></div>
+                    </div>
+                    
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox" id="rememberMe">
+                            <span>Remember me</span>
+                        </label>
+                        <a href="#" class="forgot-password" id="forgotPassword">Forgot password?</a>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary login-btn">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Sign In
+                    </button>
+                </form>
+                
+                <div class="divider">
+                    <span>New to EduSphere?</span>
+                </div>
+                
+                <div class="register-link">
+                    <p>Don't have an account? <a href="register.html">Create account</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- JavaScript -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ui = window.ui || new UI();
+            
+            // Check for registration success message
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('registered') === 'true') {
+                document.getElementById('loginSuccess').classList.add('show');
+                setTimeout(() => {
+                    document.getElementById('loginSuccess').classList.remove('show');
+                }, 5000);
+            }
+            
+            // Login form submission
+            document.getElementById('loginForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value;
+                const rememberMe = document.getElementById('rememberMe').checked;
+                
+                // Clear previous errors
+                document.getElementById('loginError').classList.remove('show');
+                document.getElementById('emailError').classList.remove('show');
+                document.getElementById('passwordError').classList.remove('show');
+                
+                // Validate email
+                if (!email) {
+                    document.getElementById('emailError').textContent = 'Email is required';
+                    document.getElementById('emailError').classList.add('show');
+                    return;
+                }
+                
+                if (!ui.validateEmail(email)) {
+                    document.getElementById('emailError').textContent = 'Please enter a valid email address';
+                    document.getElementById('emailError').classList.add('show');
+                    return;
+                }
+                
+                // Validate password
+                if (!password) {
+                    document.getElementById('passwordError').textContent = 'Password is required';
+                    document.getElementById('passwordError').classList.add('show');
+                    return;
+                }
+                
+                if (password.length < 6) {
+                    document.getElementById('passwordError').textContent = 'Password must be at least 6 characters';
+                    document.getElementById('passwordError').classList.add('show');
+                    return;
+                }
+                
+                // Set persistence based on remember me
+                const persistence = rememberMe ? 
+                    firebase.auth.Auth.Persistence.LOCAL : 
+                    firebase.auth.Auth.Persistence.SESSION;
+                
+                try {
+                    // Set persistence
+                    await firebase.auth().setPersistence(persistence);
+                    
+                    // Attempt login
+                    await loginUser(email, password);
+                    
+                } catch (error) {
+                    console.error('Login error:', error);
+                    showLoginError(error.message);
+                }
+            });
+            
+            // Forgot password
+            document.getElementById('forgotPassword').addEventListener('click', function(e) {
+                e.preventDefault();
+                const email = prompt('Please enter your email address to reset your password:');
+                
+                if (email) {
+                    if (ui.validateEmail(email)) {
+                        resetPassword(email);
+                    } else {
+                        alert('Please enter a valid email address');
+                    }
+                }
+            });
+            
+            function showLoginError(message) {
+                const errorDiv = document.getElementById('loginError');
+                const errorSpan = errorDiv.querySelector('span');
+                
+                // Format error message for user
+                let userMessage = message;
+                if (message.includes('invalid-credential')) {
+                    userMessage = 'Invalid email or password';
+                } else if (message.includes('user-not-found')) {
+                    userMessage = 'No account found with this email';
+                } else if (message.includes('wrong-password')) {
+                    userMessage = 'Incorrect password';
+                } else if (message.includes('too-many-requests')) {
+                    userMessage = 'Too many failed attempts. Please try again later';
+                }
+                
+                errorSpan.textContent = userMessage;
+                errorDiv.classList.add('show');
+                
+                // Hide after 5 seconds
+                setTimeout(() => {
+                    errorDiv.classList.remove('show');
+                }, 5000);
+            }
+        });
+    </script>
+</body>
+                      </html>
