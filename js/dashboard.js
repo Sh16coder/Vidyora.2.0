@@ -68,42 +68,42 @@ class DashboardManager {
                     name: 'Mathematics',
                     icon: 'fa-calculator',
                     colorClass: 'icon-math',
-                    description: 'Algebra, Calculus, Geometry, and Advanced Mathematics',
+                    description: 'Maths by Mr shakeel Ahmad',
                     link: 'https://adminsblog.vercel.app/'
                 },
                 {
                     name: 'Physics',
                     icon: 'fa-atom',
                     colorClass: 'icon-physics',
-                    description: 'Mechanics, Thermodynamics, Optics, and Modern Physics',
+                    description: 'Physics by Mr. Shivam soni',
                     link: 'https://adminsblog.vercel.app/'
                 },
                 {
                     name: 'Chemistry',
                     icon: 'fa-flask',
                     colorClass: 'icon-chemistry',
-                    description: 'Organic, Inorganic, Physical Chemistry, and Laboratory Work',
+                    description: 'Chemistry by Mrs. Srilekha jauhari',
                     link: 'https://adminsblog.vercel.app/'
                 },
                 {
                     name: 'English',
                     icon: 'fa-language',
                     colorClass: 'icon-english',
-                    description: 'Literature, Grammar, Composition, and Communication Skills',
+                    description: 'English by Ms Priya ',
                     link: 'https://adminsblog.vercel.app/'
                 },
                 {
                     name: 'Hindi',
                     icon: 'fa-book',
                     colorClass: 'icon-hindi',
-                    description: 'साहित्य, व्याकरण, रचना, और संचार कौशल',
+                    description: 'Hindi by Mrs. Anuja Ray',
                     link: 'https://adminsblog.vercel.app/'
                 },
                 {
                     name: 'Computer Science',
                     icon: 'fa-laptop-code',
                     colorClass: 'icon-computer',
-                    description: 'Programming, Databases, Networks, and Software Development',
+                    description: 'CS by Mr Shivakamal',
                     link: 'https://adminsblog.vercel.app/'
                 }
             ];
@@ -215,10 +215,10 @@ class DashboardManager {
             '9B': 'Mr. Verma',
             '10A': 'Ms. Patel',
             '10B': 'Mr. Singh',
-            '11A': 'Dr. Kumar',
-            '11B': 'Mrs. Gupta',
-            '12A': 'Mr. Joshi',
-            '12B': 'Ms. Reddy'
+            '11A': 'Mr shivam soni',
+            '11B': 'Ms abc',
+            '12A': 'Mrs. Srilekha jauhari',
+            '12B': 'Ms. Priya'
         };
         
         return teachers[className] || 'Not assigned';
