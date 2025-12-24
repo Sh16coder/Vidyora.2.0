@@ -1,0 +1,1961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSphere Pro - Academic Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Montserrat:wght@800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    <style>
+        :root {
+            --primary: #6d28d9;
+            --primary-dark: #5b21b6;
+            --primary-light: #8b5cf6;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --gradient-primary: linear-gradient(135deg, #6d28d9 0%, #4c1d95 100%);
+            --gradient-secondary: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --gradient-accent: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            --gradient-dark: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+            --shadow-2xl: 0 25px 50px -12px rgba(0,0,0,0.25);
+            --shadow-inner: inset 0 2px 4px 0 rgba(0,0,0,0.06);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --radius-2xl: 24px;
+            --radius-full: 9999px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--dark);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .particle-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(109, 40, 217, 0.1), rgba(16, 185, 129, 0.1));
+            animation: floatParticle 20s infinite linear;
+        }
+
+        .particle:nth-child(1) {
+            width: 400px;
+            height: 400px;
+            top: -150px;
+            left: -150px;
+            animation-duration: 25s;
+            background: linear-gradient(135deg, rgba(109, 40, 217, 0.15), rgba(139, 92, 246, 0.1));
+        }
+
+        .particle:nth-child(2) {
+            width: 300px;
+            height: 300px;
+            bottom: -100px;
+            right: -100px;
+            animation-duration: 30s;
+            animation-delay: -10s;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.1));
+        }
+
+        .particle:nth-child(3) {
+            width: 200px;
+            height: 200px;
+            top: 20%;
+            right: 10%;
+            animation-duration: 20s;
+            animation-delay: -5s;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.1));
+        }
+
+        .particle:nth-child(4) {
+            width: 250px;
+            height: 250px;
+            bottom: 30%;
+            left: 5%;
+            animation-duration: 35s;
+            animation-delay: -15s;
+        }
+
+        @keyframes floatParticle {
+            0% {
+                transform: translate(0, 0) rotate(0deg) scale(1);
+            }
+            25% {
+                transform: translate(100px, 50px) rotate(90deg) scale(1.1);
+            }
+            50% {
+                transform: translate(50px, 100px) rotate(180deg) scale(1);
+            }
+            75% {
+                transform: translate(-50px, 50px) rotate(270deg) scale(0.9);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg) scale(1);
+            }
+        }
+
+        /* Glowing Orb Effect */
+        .glow-orb {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, rgba(109, 40, 217, 0.2), transparent 70%);
+            filter: blur(80px);
+            z-index: 0;
+            animation: glowMove 15s ease-in-out infinite alternate;
+        }
+
+        .glow-orb.top-left {
+            top: -250px;
+            left: -250px;
+        }
+
+        .glow-orb.bottom-right {
+            bottom: -250px;
+            right: -250px;
+            background: radial-gradient(circle at center, rgba(16, 185, 129, 0.2), transparent 70%);
+            animation-delay: -7.5s;
+        }
+
+        @keyframes glowMove {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            50% {
+                transform: translate(50px, 50px) scale(1.1);
+            }
+            100% {
+                transform: translate(-50px, -50px) scale(0.9);
+            }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Splash Screen */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .logo-master {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .logo-orb {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 30px;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .logo-core {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 90px;
+            color: transparent;
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: logoPulse 3s ease-in-out infinite, logoRotate 8s linear infinite;
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { 
+                transform: scale(1) rotateY(0deg);
+                filter: brightness(1) drop-shadow(0 0 20px rgba(109, 40, 217, 0.5));
+            }
+            50% { 
+                transform: scale(1.15) rotateY(180deg);
+                filter: brightness(1.2) drop-shadow(0 0 40px rgba(16, 185, 129, 0.7));
+            }
+        }
+
+        @keyframes logoRotate {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+
+        .logo-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            display: inline-block;
+        }
+
+        .logo-text::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+            filter: blur(20px);
+            opacity: 0.3;
+            z-index: -1;
+            border-radius: 20px;
+            animation: logoGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes logoGlow {
+            from { opacity: 0.3; filter: blur(20px); }
+            to { opacity: 0.5; filter: blur(30px); }
+        }
+
+        .logo-subtitle {
+            font-size: 1.3rem;
+            color: var(--gray-300);
+            margin-top: 15px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 300;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-subtitle::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary-light), transparent);
+            animation: subtitleLine 2s ease-in-out infinite;
+        }
+
+        @keyframes subtitleLine {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+
+        .loading-supernova {
+            width: 400px;
+            margin-top: 60px;
+        }
+
+        .loading-title {
+            color: var(--gray-300);
+            font-size: 1rem;
+            margin-bottom: 20px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+        }
+
+        .loading-title::after {
+            content: '▰▰▰▰▰▰▰▰▰▰';
+            display: block;
+            font-size: 1.5rem;
+            letter-spacing: 5px;
+            color: var(--primary-light);
+            margin-top: 10px;
+            animation: loadingDots 2s steps(10, end) infinite;
+        }
+
+        @keyframes loadingDots {
+            0%, 20% { content: '▰▱▱▱▱▱▱▱▱▱'; }
+            25%, 45% { content: '▰▰▱▱▱▱▱▱▱▱'; }
+            50%, 70% { content: '▰▰▰▱▱▱▱▱▱▱'; }
+            75%, 95% { content: '▰▰▰▰▰▰▰▰▰▱'; }
+            100% { content: '▰▰▰▰▰▰▰▰▰▰'; }
+        }
+
+        .loading-bar-advanced {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            position: relative;
+            margin-top: 30px;
+        }
+
+        .loading-progress-advanced {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            background-size: 200% 100%;
+            border-radius: var(--radius-full);
+            position: relative;
+            animation: loading 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards, gradientMove 3s linear infinite;
+        }
+
+        @keyframes loading {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .loading-progress-advanced::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Screens */
+        .screen {
+            display: none;
+            width: 100%;
+            max-width: 480px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-2xl);
+            box-shadow: 
+                var(--shadow-2xl),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                0 0 40px rgba(109, 40, 217, 0.2);
+            overflow: hidden;
+            animation: screenReveal 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            z-index: 2;
+            transform-origin: center;
+        }
+
+        .screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            z-index: 1;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes screenReveal {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.95);
+                filter: blur(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
+        }
+
+        /* Screen Header */
+        .screen-header {
+            padding: 50px 40px 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .screen-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            color: white;
+            font-size: 32px;
+            box-shadow: 
+                0 10px 25px rgba(109, 40, 217, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            position: relative;
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .screen-header h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .screen-header p {
+            color: var(--gray-600);
+            font-size: 1.05rem;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        /* Screen Content */
+        .screen-content {
+            padding: 0 40px 40px;
+        }
+
+        /* Form Elements */
+        .input-group {
+            margin-bottom: 28px;
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--gray-700);
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-group label .required {
+            color: var(--danger);
+        }
+
+        .input-container {
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-400);
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            z-index: 1;
+        }
+
+        .input-field, .select-field {
+            width: 100%;
+            padding: 20px 20px 20px 60px;
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: var(--gray-800);
+            background: var(--gray-50);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+            box-shadow: var(--shadow-inner);
+        }
+
+        .input-field:focus, .select-field:focus {
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 
+                0 0 0 4px rgba(109, 40, 217, 0.1),
+                var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .input-field:focus + .input-icon {
+            color: var(--primary);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .input-field.error, .select-field.error {
+            border-color: var(--danger);
+            background: rgba(239, 68, 68, 0.02);
+        }
+
+        .input-field.success, .select-field.success {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.02);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gray-400);
+            cursor: pointer;
+            padding: 5px;
+            transition: color 0.3s;
+            z-index: 2;
+        }
+
+        .password-toggle:hover {
+            color: var(--primary);
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 22px 24px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 
+                0 10px 25px rgba(109, 40, 217, 0.3),
+                0 5px 10px rgba(109, 40, 217, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 20px 40px rgba(109, 40, 217, 0.4),
+                0 10px 20px rgba(109, 40, 217, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--gray-700);
+            border: 2px solid var(--gray-200);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Messages */
+        .message {
+            padding: 18px 20px;
+            border-radius: var(--radius-lg);
+            margin-bottom: 28px;
+            font-weight: 500;
+            display: none;
+            animation: messageSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left: 4px solid transparent;
+            box-shadow: var(--shadow-md);
+        }
+
+        @keyframes messageSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .message.error {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 53, 69, 0.05));
+            border-left-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .message.success {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05));
+            border-left-color: var(--success);
+            color: #065f46;
+        }
+
+        .message.warning {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(217, 119, 6, 0.05));
+            border-left-color: var(--warning);
+            color: #92400e;
+        }
+
+        /* Profile Picture */
+        .profile-picture {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .profile-orb {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 25px;
+            position: relative;
+            cursor: pointer;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            padding: 5px;
+            box-shadow: 
+                0 20px 40px rgba(109, 40, 217, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .profile-orb:hover {
+            transform: scale(1.05) rotate(5deg);
+            box-shadow: 
+                0 30px 60px rgba(109, 40, 217, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.3);
+        }
+
+        .profile-orb::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: translateX(-100%);
+        }
+
+        .profile-orb:hover::before {
+            animation: orbShine 1s;
+        }
+
+        @keyframes orbShine {
+            100% { transform: translateX(100%); }
+        }
+
+        .profile-img-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: var(--gray-100);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--gray-400);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .profile-placeholder i {
+            font-size: 70px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .profile-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+            border-radius: 50%;
+        }
+
+        .profile-upload-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s;
+            border-radius: 50%;
+        }
+
+        .profile-orb:hover .profile-upload-overlay {
+            opacity: 1;
+        }
+
+        .upload-text {
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .upload-text:hover {
+            color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        /* Class & Teacher Selection */
+        .select-container {
+            position: relative;
+        }
+
+        .select-field {
+            appearance: none;
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2394a3b8' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 20px center;
+            background-size: 16px;
+            padding-right: 50px;
+        }
+
+        /* Teacher Display */
+        .teacher-display {
+            background: linear-gradient(135deg, var(--gray-50), white);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-top: 15px;
+            display: none;
+            animation: fadeInUp 0.4s;
+            box-shadow: var(--shadow-sm);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .teacher-display h4 {
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .teacher-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .teacher-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+            box-shadow: var(--shadow-md);
+        }
+
+        .teacher-details {
+            flex: 1;
+        }
+
+        .teacher-name {
+            font-weight: 700;
+            color: var(--gray-800);
+            font-size: 1.1rem;
+        }
+
+        .teacher-subject {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Links */
+        .auth-link {
+            text-align: center;
+            margin-top: 30px;
+            color: var(--gray-600);
+            font-size: 0.95rem;
+        }
+
+        .auth-link a {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .auth-link a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        .screen-footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--gray-200);
+            color: var(--gray-500);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+            
+            .screen {
+                max-width: 100%;
+            }
+            
+            .screen-header {
+                padding: 40px 24px 24px;
+            }
+            
+            .screen-content {
+                padding: 0 24px 32px;
+            }
+            
+            .logo-text {
+                font-size: 3.5rem;
+            }
+            
+            .logo-orb {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .logo-core {
+                font-size: 70px;
+            }
+            
+            .loading-supernova {
+                width: 100%;
+                max-width: 320px;
+            }
+            
+            .screen-icon {
+                width: 70px;
+                height: 70px;
+                font-size: 28px;
+            }
+            
+            .screen-header h2 {
+                font-size: 2rem;
+            }
+            
+            .input-field, .select-field {
+                padding: 18px 18px 18px 56px;
+            }
+            
+            .btn {
+                padding: 20px 22px;
+            }
+            
+            .profile-orb {
+                width: 160px;
+                height: 160px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo-text {
+                font-size: 2.8rem;
+            }
+            
+            .logo-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .logo-orb {
+                width: 120px;
+                height: 120px;
+                margin-bottom: 20px;
+            }
+            
+            .logo-core {
+                font-size: 60px;
+            }
+            
+            .screen-header {
+                padding: 32px 20px 20px;
+            }
+            
+            .screen-header h2 {
+                font-size: 1.8rem;
+            }
+            
+            .screen-content {
+                padding: 0 20px 28px;
+            }
+            
+            .input-field, .select-field {
+                padding: 16px 16px 16px 52px;
+                font-size: 1rem;
+            }
+            
+            .btn {
+                padding: 18px 20px;
+                font-size: 1rem;
+            }
+            
+            .message {
+                padding: 16px 18px;
+            }
+            
+            .profile-orb {
+                width: 140px;
+                height: 140px;
+            }
+            
+            .teacher-info {
+                flex-direction: column;
+                text-align: center;
+                gap: 12px;
+            }
+        }
+
+        /* Dark Mode Support */
+        @media (prefers-color-scheme: dark) {
+            .screen {
+                background: rgba(30, 41, 59, 0.95);
+                border-color: rgba(255, 255, 255, 0.1);
+            }
+            
+            .screen-header p {
+                color: var(--gray-300);
+            }
+            
+            .input-field, .select-field {
+                background: rgba(15, 23, 42, 0.5);
+                border-color: rgba(255, 255, 255, 0.1);
+                color: var(--gray-100);
+            }
+            
+            .input-field:focus, .select-field:focus {
+                background: rgba(15, 23, 42, 0.8);
+            }
+            
+            .btn-secondary {
+                background: rgba(30, 41, 59, 0.8);
+                color: var(--gray-100);
+                border-color: rgba(255, 255, 255, 0.1);
+            }
+            
+            .teacher-display {
+                background: rgba(15, 23, 42, 0.5);
+                border-color: rgba(255, 255, 255, 0.1);
+            }
+            
+            .teacher-name {
+                color: var(--gray-100);
+            }
+            
+            .teacher-subject {
+                color: var(--gray-400);
+            }
+            
+            .screen-footer {
+                border-color: rgba(255, 255, 255, 0.1);
+                color: var(--gray-400);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="particle-container">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+    
+    <!-- Glowing Orbs -->
+    <div class="glow-orb top-left"></div>
+    <div class="glow-orb bottom-right"></div>
+
+    <div class="container">
+        <!-- Splash Screen -->
+        <div id="splash-screen">
+            <div class="logo-master">
+                <div class="logo-orb">
+                    <div class="logo-core">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                </div>
+                <div class="logo-text">EduSphere</div>
+                <div class="logo-subtitle">Academic Excellence Portal</div>
+            </div>
+            <div class="loading-supernova">
+                <div class="loading-title">Initializing Portal</div>
+                <div class="loading-bar-advanced">
+                    <div class="loading-progress-advanced"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Screen -->
+        <div id="login-screen" class="screen">
+            <div class="screen-header">
+                <div class="screen-icon">
+                    <i class="fas fa-sign-in-alt"></i>
+                </div>
+                <h2>Welcome Back</h2>
+                <p>Sign in to access your academic dashboard</p>
+            </div>
+            <div class="screen-content">
+                <div class="message error" id="login-error"></div>
+                <div class="message success" id="login-success"></div>
+                
+                <form id="login-form">
+                    <div class="input-group">
+                        <label for="login-email">
+                            <i class="fas fa-envelope"></i>
+                            Email Address <span class="required">*</span>
+                        </label>
+                        <div class="input-container">
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input type="email" id="login-email" class="input-field" placeholder="student@example.com" required>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="login-password">
+                            <i class="fas fa-lock"></i>
+                            Password <span class="required">*</span>
+                        </label>
+                        <div class="input-container">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="login-password" class="input-field" placeholder="Enter your password" required>
+                            <button type="button" class="password-toggle" id="toggle-login-password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" id="login-btn">
+                        <i class="fas fa-sign-in-alt"></i> Sign In
+                    </button>
+                    
+                    <div class="auth-link">
+                        Don't have an account? <a href="#" id="show-register">Register Now</a>
+                    </div>
+                </form>
+            </div>
+            <div class="screen-footer">
+                <p>© 2024 EduSphere Pro. All rights reserved.</p>
+            </div>
+        </div>
+
+        <!-- Register Screen -->
+        <div id="register-screen" class="screen">
+            <div class="screen-header">
+                <div class="screen-icon">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <h2>Create Account</h2>
+                <p>Join EduSphere to begin your academic journey</p>
+            </div>
+            <div class="screen-content">
+                <div class="message error" id="register-error"></div>
+                <div class="message success" id="register-success"></div>
+                
+                <form id="register-form">
+                    <div class="input-group">
+                        <label for="register-email">
+                            <i class="fas fa-envelope"></i>
+                            Email Address <span class="required">*</span>
+                        </label>
+                        <div class="input-container">
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input type="email" id="register-email" class="input-field" placeholder="student@example.com" required>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="register-password">
+                            <i class="fas fa-lock"></i>
+                            Password <span class="required">*</span>
+                        </label>
+                        <div class="input-container">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="register-password" class="input-field" placeholder="Create a strong password" required>
+                            <button type="button" class="password-toggle" id="toggle-register-password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="password-strength" id="password-strength"></div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="confirm-password">
+                            <i class="fas fa-lock"></i>
+                            Confirm Password <span class="required">*</span>
+                        </label>
+                        <div class="input-container">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="confirm-password" class="input-field" placeholder="Confirm your password" required>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" id="register-btn">
+                        <i class="fas fa-user-plus"></i> Create Account
+                    </button>
+                    
+                    <div class="auth-link">
+                        Already have an account? <a href="#" id="show-login">Sign In</a>
+                    </div>
+                </form>
+            </div>
+            <div class="screen-footer">
+                <p>By registering, you agree to our Terms & Privacy Policy</p>
+            </div>
+        </div>
+
+        <!-- Profile Completion Screen -->
+        <div id="profile-screen" class="screen">
+            <div class="screen-header">
+                <div class="screen-icon">
+                    <i class="fas fa-user-edit"></i>
+                </div>
+                <h2>Complete Profile</h2>
+                <p>Tell us about yourself to personalize your experience</p>
+            </div>
+            <div class="screen-content">
+                <div class="message error" id="profile-error"></div>
+                <div class="message success" id="profile-success"></div>
+                
+                <div class="profile-picture">
+                    <div class="profile-orb" id="profile-orb">
+                        <div class="profile-img-inner">
+                            <div class="profile-placeholder">
+                                <i class="fas fa-user-circle"></i>
+                                <small>Add Photo</small>
+                            </div>
+                            <img id="profile-preview" class="profile-preview" alt="Profile Preview">
+                        </div>
+                        <div class="profile-upload-overlay">
+                            <i class="fas fa-camera fa-2x"></i>
+                            <small>Change Photo</small>
+                        </div>
+                    </div>
+                    <div class="upload-text" id="upload-text">
+                        <i class="fas fa-cloud-upload-alt"></i> Upload Profile Picture (Optional)
+                    </div>
+                    <input type="file" id="profile-image" class="file-input" accept="image/*">
+                </div>
+                
+                <form id="profile-form">
+                    <div class="input-group">
+                        <label for="full-name">
+                            <i class="fas fa-user"></i>
+                            Full Name <span class="required">*</span>
+                        </label>
+                        <div class="input-container">
+                            <i class="fas fa-user input-icon"></i>
+                            <input type="text" id="full-name" class="input-field" placeholder="Enter your full name" required>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="class">
+                            <i class="fas fa-graduation-cap"></i>
+                            Class <span class="required">*</span>
+                        </label>
+                        <div class="input-container">
+                            <i class="fas fa-graduation-cap input-icon"></i>
+                            <select id="class" class="select-field" required>
+                                <option value="">Select your class</option>
+                                <option value="9A">Class 9 - Section A</option>
+                                <option value="9B">Class 9 - Section B</option>
+                                <option value="10A">Class 10 - Section A</option>
+                                <option value="10B">Class 10 - Section B</option>
+                                <option value="11A">Class 11 - Section A</option>
+                                <option value="11B">Class 11 - Section B</option>
+                                <option value="12A">Class 12 - Section A</option>
+                                <option value="12B">Class 12 - Section B</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="phone">
+                            <i class="fas fa-phone"></i>
+                            Phone Number <span class="required">*</span>
+                        </label>
+                        <div class="input-container">
+                            <i class="fas fa-phone input-icon"></i>
+                            <input type="tel" id="phone" class="input-field" placeholder="Enter 10-digit number" maxlength="10" required>
+                        </div>
+                    </div>
+                    
+                    <div id="teacher-display" class="teacher-display">
+                        <h4><i class="fas fa-chalkboard-teacher"></i> Your Class Teacher</h4>
+                        <div class="teacher-info">
+                            <div class="teacher-avatar" id="teacher-avatar">T</div>
+                            <div class="teacher-details">
+                                <div class="teacher-name" id="teacher-name">Not Selected</div>
+                                <div class="teacher-subject" id="teacher-subject">Please select your class</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" id="complete-profile-btn">
+                        <i class="fas fa-check-circle"></i> Complete Profile
+                    </button>
+                </form>
+            </div>
+            <div class="screen-footer">
+                <p>You can update your profile anytime from settings</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Firebase Configuration - REPLACE WITH YOUR CONFIGURATION
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY_HERE",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        if (firebase.apps.length === 0) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        // Class-Teacher Mapping (One teacher per class)
+        const classTeachers = {
+            '9A': { name: 'Mr. Sharma', subject: 'Mathematics & Physics', initial: 'S' },
+            '9B': { name: 'Ms. Patel', subject: 'Science & Chemistry', initial: 'P' },
+            '10A': { name: 'Mr. Kumar', subject: 'Mathematics & Computer Science', initial: 'K' },
+            '10B': { name: 'Ms. Gupta', subject: 'Biology & English', initial: 'G' },
+            '11A': { name: 'Dr. Singh', subject: 'Physics & Chemistry', initial: 'S' },
+            '11B': { name: 'Ms. Reddy', subject: 'Biology & Mathematics', initial: 'R' },
+            '12A': { name: 'Mr. Verma', subject: 'Computer Science & Physics', initial: 'V' },
+            '12B': { name: 'Ms. Joshi', subject: 'English & Economics', initial: 'J' }
+        };
+
+        // DOM Elements
+        const splashScreen = document.getElementById('splash-screen');
+        const loginScreen = document.getElementById('login-screen');
+        const registerScreen = document.getElementById('register-screen');
+        const profileScreen = document.getElementById('profile-screen');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const profileForm = document.getElementById('profile-form');
+        const loginEmailInput = document.getElementById('login-email');
+        const loginPasswordInput = document.getElementById('login-password');
+        const registerEmailInput = document.getElementById('register-email');
+        const registerPasswordInput = document.getElementById('register-password');
+        const confirmPasswordInput = document.getElementById('confirm-password');
+        const loginBtn = document.getElementById('login-btn');
+        const registerBtn = document.getElementById('register-btn');
+        const completeProfileBtn = document.getElementById('complete-profile-btn');
+        const showRegisterLink = document.getElementById('show-register');
+        const showLoginLink = document.getElementById('show-login');
+        const toggleLoginPassword = document.getElementById('toggle-login-password');
+        const toggleRegisterPassword = document.getElementById('toggle-register-password');
+        const profileImageInput = document.getElementById('profile-image');
+        const profileOrb = document.getElementById('profile-orb');
+        const profilePreview = document.getElementById('profile-preview');
+        const uploadText = document.getElementById('upload-text');
+        const classSelect = document.getElementById('class');
+        const phoneInput = document.getElementById('phone');
+        const teacherDisplay = document.getElementById('teacher-display');
+        const teacherAvatar = document.getElementById('teacher-avatar');
+        const teacherName = document.getElementById('teacher-name');
+        const teacherSubject = document.getElementById('teacher-subject');
+        const passwordStrength = document.getElementById('password-strength');
+
+        // State variables
+        let currentUser = null;
+        let profileImageFile = null;
+
+        // Enhanced loading simulation
+        setTimeout(() => {
+            splashScreen.style.opacity = '0';
+            splashScreen.style.transform = 'scale(1.1) translateY(-20px)';
+            
+            setTimeout(() => {
+                splashScreen.style.display = 'none';
+                loginScreen.classList.add('active');
+                checkAuthState();
+                
+                // Add entrance animation to login screen
+                loginScreen.style.animation = 'screenReveal 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+            }, 800);
+        }, 3500);
+
+        // Check authentication state
+        function checkAuthState() {
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    currentUser = user;
+                    checkUserProfile(user.uid);
+                }
+            }, (error) => {
+                console.error('Auth state error:', error);
+                showMessage('login-error', 'Session error. Please refresh the page.');
+            });
+        }
+
+        // Check if user profile exists
+        async function checkUserProfile(uid) {
+            try {
+                const doc = await db.collection('users').doc(uid).get();
+                if (doc.exists && doc.data().profileCompleted) {
+                    // Profile complete, redirect to dashboard
+                    showMessage('login-success', 'Welcome back! Redirecting to dashboard...');
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1500);
+                } else {
+                    // Profile incomplete, show profile screen
+                    showScreen(profileScreen);
+                    if (currentUser.email) {
+                        document.getElementById('full-name').value = currentUser.displayName || '';
+                    }
+                }
+            } catch (error) {
+                console.error("Error checking user profile:", error);
+                showMessage('login-error', 'Error loading profile. Please try again.');
+            }
+        }
+
+        // Show screen with animation
+        function showScreen(screenToShow) {
+            // Hide all screens
+            [loginScreen, registerScreen, profileScreen].forEach(screen => {
+                if (screen.classList.contains('active')) {
+                    screen.style.animation = 'screenReveal 0.5s reverse forwards';
+                    setTimeout(() => {
+                        screen.classList.remove('active');
+                        screen.style.animation = '';
+                    }, 500);
+                }
+            });
+            
+            // Show target screen
+            setTimeout(() => {
+                screenToShow.classList.add('active');
+                screenToShow.style.animation = 'screenReveal 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+            }, 500);
+        }
+
+        // Login form submission
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = loginEmailInput.value.trim();
+            const password = loginPasswordInput.value;
+            
+            if (!validateEmail(email)) {
+                showMessage('login-error', 'Please enter a valid email address');
+                loginEmailInput.focus();
+                return;
+            }
+            
+            if (password.length < 6) {
+                showMessage('login-error', 'Password must be at least 6 characters');
+                loginPasswordInput.focus();
+                return;
+            }
+            
+            loginBtn.innerHTML = '<div class="spinner"></div> Signing In...';
+            loginBtn.disabled = true;
+            
+            try {
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                currentUser = userCredential.user;
+                showMessage('login-success', 'Login successful!');
+                
+                // Check user profile
+                setTimeout(() => {
+                    checkUserProfile(currentUser.uid);
+                }, 1000);
+                
+            } catch (error) {
+                console.error('Login error:', error);
+                let errorMessage = 'Login failed. ';
+                
+                switch (error.code) {
+                    case 'auth/user-not-found':
+                        errorMessage = 'No account found with this email. Please register first.';
+                        break;
+                    case 'auth/wrong-password':
+                        errorMessage = 'Incorrect password. Please try again.';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'Invalid email address format.';
+                        break;
+                    case 'auth/user-disabled':
+                        errorMessage = 'This account has been disabled.';
+                        break;
+                    case 'auth/too-many-requests':
+                        errorMessage = 'Too many failed attempts. Please try again later.';
+                        break;
+                    default:
+                        errorMessage += error.message;
+                }
+                
+                showMessage('login-error', errorMessage);
+                loginPasswordInput.focus();
+                
+            } finally {
+                loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+                loginBtn.disabled = false;
+            }
+        });
+
+        // Register form submission
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = registerEmailInput.value.trim();
+            const password = registerPasswordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+            
+            if (!validateEmail(email)) {
+                showMessage('register-error', 'Please enter a valid email address');
+                registerEmailInput.focus();
+                return;
+            }
+            
+            if (!validatePassword(password)) {
+                showMessage('register-error', 'Password must be at least 8 characters with uppercase, lowercase, and number');
+                registerPasswordInput.focus();
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showMessage('register-error', 'Passwords do not match');
+                confirmPasswordInput.focus();
+                return;
+            }
+            
+            registerBtn.innerHTML = '<div class="spinner"></div> Creating Account...';
+            registerBtn.disabled = true;
+            
+            try {
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                currentUser = userCredential.user;
+                
+                // Send email verification
+                await currentUser.sendEmailVerification();
+                
+                showMessage('register-success', 'Account created! Please verify your email and complete your profile.');
+                
+                // Show profile screen after delay
+                setTimeout(() => {
+                    showScreen(profileScreen);
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Registration error:', error);
+                let errorMessage = 'Registration failed. ';
+                
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        errorMessage = 'Email already registered. Please sign in instead.';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'Invalid email address format.';
+                        break;
+                    case 'auth/operation-not-allowed':
+                        errorMessage = 'Email/password accounts are not enabled.';
+                        break;
+                    case 'auth/weak-password':
+                        errorMessage = 'Password is too weak. Please use a stronger password.';
+                        break;
+                    default:
+                        errorMessage += error.message;
+                }
+                
+                showMessage('register-error', errorMessage);
+                
+            } finally {
+                registerBtn.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
+                registerBtn.disabled = false;
+            }
+        });
+
+        // Profile form submission
+        profileForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const fullName = document.getElementById('full-name').value.trim();
+            const studentClass = classSelect.value;
+            const phone = phoneInput.value.trim();
+            
+            if (!fullName || !studentClass || !phone) {
+                showMessage('profile-error', 'Please fill all required fields');
+                return;
+            }
+            
+            if (!validatePhoneNumber(phone)) {
+                showMessage('profile-error', 'Please enter a valid 10-digit phone number');
+                phoneInput.focus();
+                return;
+            }
+            
+            if (!classTeachers[studentClass]) {
+                showMessage('profile-error', 'Please select a valid class');
+                return;
+            }
+            
+            completeProfileBtn.innerHTML = '<div class="spinner"></div> Saving Profile...';
+            completeProfileBtn.disabled = true;
+            
+            try {
+                let profileImageUrl = '';
+                
+                // Upload profile image if exists
+                if (profileImageFile) {
+                    profileImageUrl = await uploadProfileImage(profileImageFile);
+                }
+                
+                // Prepare user data
+                const userData = {
+                    uid: currentUser.uid,
+                    email: currentUser.email,
+                    fullName,
+                    class: studentClass,
+                    classTeacher: classTeachers[studentClass].name,
+                    phone: '+91' + phone,
+                    profileImageUrl,
+                    profileCompleted: true,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
+                    emailVerified: currentUser.emailVerified
+                };
+                
+                // Save to Firestore
+                await db.collection('users').doc(currentUser.uid).set(userData, { merge: true });
+                
+                // Update user display name
+                await currentUser.updateProfile({
+                    displayName: fullName
+                });
+                
+                showMessage('profile-success', 'Profile completed successfully! Redirecting to dashboard...');
+                
+                // Redirect to dashboard
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+                
+            } catch (error) {
+                console.error('Error saving profile:', error);
+                let errorMessage = 'Error saving profile: ';
+                
+                if (error.code === 'auth/requires-recent-login') {
+                    errorMessage = 'Session expired. Please sign in again.';
+                    setTimeout(() => {
+                        showScreen(loginScreen);
+                    }, 2000);
+                } else {
+                    errorMessage += error.message;
+                }
+                
+                showMessage('profile-error', errorMessage);
+                
+            } finally {
+                completeProfileBtn.innerHTML = '<i class="fas fa-check-circle"></i> Complete Profile';
+                completeProfileBtn.disabled = false;
+            }
+        });
+
+        // Profile image upload
+        profileOrb.addEventListener('click', () => {
+            profileImageInput.click();
+        });
+
+        uploadText.addEventListener('click', () => {
+            profileImageInput.click();
+        });
+
+        profileImageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                // Validate file size (max 2MB)
+                if (file.size > 2 * 1024 * 1024) {
+                    showMessage('profile-error', 'Image size should be less than 2MB');
+                    return;
+                }
+                
+                // Validate file type
+                if (!file.type.match('image/jpeg') && !file.type.match('image/png') && !file.type.match('image/jpg')) {
+                    showMessage('profile-error', 'Please select a JPG or PNG image');
+                    return;
+                }
+                
+                profileImageFile = file;
+                const reader = new FileReader();
+                
+                reader.onload = (e) => {
+                    profilePreview.src = e.target.result;
+                    profilePreview.style.display = 'block';
+                    profileOrb.querySelector('.profile-placeholder').style.display = 'none';
+                    showMessage('profile-error', '');
+                };
+                
+                reader.onerror = () => {
+                    showMessage('profile-error', 'Error reading image file');
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Class selection change
+        classSelect.addEventListener('change', () => {
+            const selectedClass = classSelect.value;
+            
+            if (classTeachers[selectedClass]) {
+                const teacher = classTeachers[selectedClass];
+                teacherDisplay.style.display = 'block';
+                teacherName.textContent = teacher.name;
+                teacherSubject.textContent = teacher.subject;
+                teacherAvatar.textContent = teacher.initial;
+                teacherAvatar.style.background = `linear-gradient(135deg, var(--primary), var(--secondary))`;
+            } else {
+                teacherDisplay.style.display = 'none';
+            }
+        });
+
+        // Password toggle visibility
+        toggleLoginPassword.addEventListener('click', () => {
+            const type = loginPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            loginPasswordInput.setAttribute('type', type);
+            toggleLoginPassword.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+        });
+
+        toggleRegisterPassword.addEventListener('click', () => {
+            const type = registerPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            registerPasswordInput.setAttribute('type', type);
+            toggleRegisterPassword.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+        });
+
+        // Password strength indicator
+        registerPasswordInput.addEventListener('input', () => {
+            const password = registerPasswordInput.value;
+            const strength = calculatePasswordStrength(password);
+            updatePasswordStrength(strength);
+        });
+
+        // Navigation between login and register
+        showRegisterLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showScreen(registerScreen);
+            registerEmailInput.focus();
+        });
+
+        showLoginLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showScreen(loginScreen);
+            loginEmailInput.focus();
+        });
+
+        // Helper functions
+        async function uploadProfileImage(file) {
+            try {
+                const storageRef = storage.ref();
+                const fileExt = file.name.split('.').pop();
+                const fileName = `profile_${currentUser.uid}_${Date.now()}.${fileExt}`;
+                const fileRef = storageRef.child(`profile-images/${currentUser.uid}/${fileName}`);
+                
+                const snapshot = await fileRef.put(file);
+                const downloadURL = await snapshot.ref.getDownloadURL();
+                
+                return downloadURL;
+                
+            } catch (error) {
+                console.error('Error uploading image:', error);
+                throw new Error('Failed to upload profile image');
+            }
+        }
+
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function validatePhoneNumber(phone) {
+            const phoneRegex = /^[6789]\d{9}$/;
+            return phoneRegex.test(phone);
+        }
+
+        function validatePassword(password) {
+            // At least 8 characters, 1 uppercase, 1 lowercase, 1 number
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+            return passwordRegex.test(password);
+        }
+
+        function calculatePasswordStrength(password) {
+            let score = 0;
+            if (password.length >= 8) score++;
+            if (password.length >= 12) score++;
+            if (/[A-Z]/.test(password)) score++;
+            if (/[0-9]/.test(password)) score++;
+            if (/[^A-Za-z0-9]/.test(password)) score++;
+            return Math.min(score, 5);
+        }
+
+        function updatePasswordStrength(strength) {
+            const strengthText = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong', 'Very Strong'];
+            const strengthColors = ['#ef4444', '#f97316', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6'];
+            
+            passwordStrength.textContent = `Strength: ${strengthText[strength]}`;
+            passwordStrength.style.color = strengthColors[strength];
+            passwordStrength.style.fontWeight = '600';
+            passwordStrength.style.marginTop = '8px';
+            passwordStrength.style.fontSize = '0.9rem';
+        }
+
+        function showMessage(elementId, message) {
+            const element = document.getElementById(elementId);
+            const allMessages = document.querySelectorAll('.message');
+            
+            // Hide all messages first
+            allMessages.forEach(msg => {
+                msg.style.display = 'none';
+            });
+            
+            if (message) {
+                element.textContent = message;
+                element.style.display = 'block';
+                
+                // Auto-hide success messages after 5 seconds
+                if (elementId.includes('success')) {
+                    setTimeout(() => {
+                        element.style.display = 'none';
+                    }, 5000);
+                }
+            }
+        }
+
+        // Initialize phone input formatting
+        phoneInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 10) value = value.substring(0, 10);
+            e.target.value = value;
+        });
+
+        // Add input focus effects
+        document.querySelectorAll('.input-field, .select-field').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.classList.remove('focused');
+            });
+        });
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl + Enter to submit forms
+            if (e.ctrlKey && e.key === 'Enter') {
+                if (loginScreen.classList.contains('active')) {
+                    loginBtn.click();
+                } else if (registerScreen.classList.contains('active')) {
+                    registerBtn.click();
+                } else if (profileScreen.classList.contains('active')) {
+                    completeProfileBtn.click();
+                }
+            }
+            
+            // Escape to go back
+            if (e.key === 'Escape') {
+                if (registerScreen.classList.contains('active')) {
+                    showScreen(loginScreen);
+                } else if (profileScreen.classList.contains('active') && currentUser) {
+                    showScreen(loginScreen);
+                }
+            }
+        });
+
+        // Handle page visibility change
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+                // Check if user is still authenticated
+                if (currentUser) {
+                    currentUser.getIdToken(true).catch(() => {
+                        // Token refresh failed, show login
+                        showScreen(loginScreen);
+                        showMessage('login-error', 'Session expired. Please sign in again.');
+                    });
+                }
+            }
+        });
+
+        // Initialize the application
+        console.log('EduSphere Pro Portal Initialized');
+    </script>
+</body>
+</html>
