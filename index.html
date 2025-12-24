@@ -1068,7 +1068,7 @@
                             <i class="fas fa-chalkboard-teacher input-icon"></i>
                             <select id="class-teacher" class="select-field" required>
                                 <option value="">Select your class teacher</option>
-                                <option value="Mr. Sharma">Mr. Sharma (9A, 9B)</option>
+                                <option value="Mr. Sharma">Mr. Sharma (9A,)</option>
                                 <option value="Ms. Patel">Ms. Patel (10A, 10B)</option>
                                 <option value="Mr. Kumar">Mr. Kumar (11A, 11B)</option>
                                 <option value="Ms. Gupta">Ms. Gupta (12A, 12B)</option>
@@ -1106,14 +1106,14 @@
 
     <script>
         // Firebase Configuration - REPLACE WITH YOUR CONFIGURATION
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY_HERE",
-            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT_ID.appspot.com",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
+        firebaseConfig = {
+  apiKey: "AIzaSyBDD6jyyNFQtvGO7gibliRBMcIFuM4OqjA",
+  authDomain: "whiteboard-a794c.firebaseapp.com",
+  projectId: "whiteboard-a794c",
+  storageBucket: "whiteboard-a794c.firebasestorage.app",
+  messagingSenderId: "996768687477",
+  appId: "1:996768687477:web:f0dfeb45b7a9c92c4b9f3c"
+};
 
         // Initialize Firebase
         if (firebase.apps.length === 0) {
@@ -1140,7 +1140,7 @@
         const profileImageInput = document.getElementById('profile-image');
         const profileImgContainer = document.getElementById('profile-img-container');
         const profilePreview = document.getElementById('profile-preview');
-        const uploadText = document.getElementById('upload-text');
+        const uploadconstText = document.getElementById('upload-text');
         const classSelect = document.getElementById('class');
         const teacherSelect = document.getElementById('class-teacher');
         const phoneInputProfile = document.getElementById('phone');
