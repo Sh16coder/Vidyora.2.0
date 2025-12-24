@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSphere Pro | Welcome</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@300;400;500&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Browser Image Compression -->
+    <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.min.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <style>
+        /* Splash Screen Specific Styles */
+        .splash-screen {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: var(--white);
+            overflow: hidden;
+            position: relative;
+            min-height: 100vh;
+            transition: opacity 0.5s ease;
+        }
+        
+        .splash-screen.fade-out {
+            opacity: 0;
+        }
+        
+        .particles-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: var(--z-negative);
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: var(--radius-full);
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, rgba(139, 92, 246, 0.1) 70%);
+            animation: float 15s infinite linear;
+        }
+        
+        .splash-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: var(--space-8);
+            position: relative;
+            z-index: var(--z-base);
+        }
+        
+        /* 3D Logo Container */
+        .logo-3d-container {
+            position: relative;
+            margin-bottom: var(--space-8);
+            perspective: 1000px;
+            width: 200px;
+            height: 200px;
+        }
+        
+        .logo-3d {
+            font-size: 8rem;
+            color: var(--white);
+            transform-style: preserve-3d;
+            animation: rotate3d 8s infinite linear;
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .glow-effect {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.4) 0%, rgba(99, 102, 241, 0) 70%);
+            border-radius: var(--radius-full);
+            filter: blur(20px);
+            animation: pulse 2s infinite ease-in-out;
+            z-index: 1;
+        }
+        
+        /* Title Styles */
+        .splash-title {
+            text-align: center;
+            margin-bottom: var(--space-12);
+            animation: slideUp 1s ease-out;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: var(--text-6xl);
+            font-weight: 700;
+            margin-bottom: var(--space-2);
+            text-shadow: var(--shadow-glow);
+        }
+        
+        .pro-badge {
+            display: inline-block;
+            background: var(--gradient-primary);
+            color: white;
+            padding: var(--space-1) var(--space-3);
+            border-radius: var(--radius-md);
+            font-size: var(--text-xl);
+            margin-left: var(--space-2);
+            vertical-align: middle;
+            transform: translateY(-0.5em);
+        }
+        
+        .splash-subtitle {
+            font-size: var(--text-xl);
+            color: var(--gray-300);
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        /* Loading Bar */
+        .loading-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            animation: slideUp 1s ease-out 0.3s both;
+        }
+        
+        .loading-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            margin-bottom: var(--space-4);
+            position: relative;
+        }
+        
+        .loading-progress {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: var(--radius-full);
+            animation: loading 2.5s ease-in-out forwards;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .loading-progress::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+            animation: shimmer 2s infinite;
+        }
+        
+        .loading-text {
+            text-align: center;
+            color: var(--gray-300);
+            font-size: var(--text-sm);
+            font-weight: 300;
+            animation: fadeIn 2s ease-in-out infinite alternate;
+        }
+        
+        /* Footer */
+        .splash-footer {
+            position: absolute;
+            bottom: var(--space-8);
+            left: 0;
+            right: 0;
+            text-align: center;
+            animation: slideUp 1s ease-out 0.6s both;
+        }
+        
+        .version {
+            font-size: var(--text-sm);
+            color: var(--gray-400);
+            margin-bottom: var(--space-2);
+        }
+        
+        .copyright {
+            font-size: var(--text-xs);
+            color: var(--gray-500);
+        }
+        
+        /* Orb Animations */
+        .orbs-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: var(--z-negative);
+            overflow: hidden;
+        }
+        
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.05) 70%);
+            filter: blur(40px);
+            animation: orbFloat 20s infinite linear;
+        }
+        
+        /* Custom Animations */
+        @keyframes orbFloat {
+            0% {
+                transform: translateY(0) translateX(0) scale(1);
+                opacity: 0.3;
+            }
+            25% {
+                transform: translateY(-100px) translateX(100px) scale(1.2);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translateY(50px) translateX(-100px) scale(0.8);
+                opacity: 0.7;
+            }
+            75% {
+                transform: translateY(100px) translateX(50px) scale(1.1);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(0) translateX(0) scale(1);
+                opacity: 0.3;
+            }
+        }
+        
+        @keyframes loading {
+            0% {
+                width: 0%;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+        
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .gradient-text {
+                font-size: var(--text-5xl);
+            }
+            
+            .logo-3d {
+                font-size: 6rem;
+            }
+            
+            .logo-3d-container {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .glow-effect {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .splash-subtitle {
+                font-size: var(--text-lg);
+                letter-spacing: 1px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .gradient-text {
+                font-size: var(--text-4xl);
+            }
+            
+            .logo-3d {
+                font-size: 4rem;
+            }
+            
+            .logo-3d-container {
+                width: 120px;
+                height: 120px;
+                margin-bottom: var(--space-6);
+            }
+            
+            .glow-effect {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .splash-title {
+                margin-bottom: var(--space-8);
+            }
+            
+            .splash-subtitle {
+                font-size: var(--text-base);
+                letter-spacing: 0.5px;
+            }
+            
+            .splash-container {
+                padding: var(--space-4);
+            }
+            
+            .splash-footer {
+                bottom: var(--space-4);
+            }
+        }
+    </style>
+</head>
+<body class="splash-screen">
+    <!-- Floating Gradient Orbs -->
+    <div class="orbs-container">
+        <div class="orb" style="width: 300px; height: 300px; top: 10%; left: 5%; animation-delay: 0s;"></div>
+        <div class="orb" style="width: 200px; height: 200px; top: 60%; right: 10%; animation-delay: 5s;"></div>
+        <div class="orb" style="width: 250px; height: 250px; bottom: 20%; left: 15%; animation-delay: 10s;"></div>
+    </div>
+    
+    <!-- Floating Particles Background -->
+    <div class="particles-container" id="particlesContainer">
+        <!-- Particles will be generated by JavaScript -->
+    </div>
+    
+    <!-- Main Content -->
+    <main class="splash-container">
+        <!-- 3D Rotating Graduation Cap -->
+        <div class="logo-3d-container">
+            <div class="logo-3d">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="glow-effect"></div>
+        </div>
+        
+        <!-- App Title with Glow -->
+        <div class="splash-title">
+            <h1 class="gradient-text">EduSphere<span class="pro-badge">Pro</span></h1>
+            <p class="splash-subtitle">Student Learning Portal</p>
+        </div>
+        
+        <!-- Animated Loading Bar -->
+        <div class="loading-container">
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+            <p class="loading-text">Initializing Premium Experience...</p>
+        </div>
+        
+        <!-- Version & Copyright -->
+        <div class="splash-footer">
+            <p class="version">v1.0.0</p>
+            <p class="copyright">© 2024 EduSphere Pro. All rights reserved.</p>
+        </div>
+    </main>
+    
+    <!-- JavaScript -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/ui.js"></script>
+    <script>
+        // Function to create floating particles
+        function createParticles(count) {
+            const container = document.getElementById('particlesContainer');
+            if (!container) return;
+            
+            // Clear existing particles
+            container.innerHTML = '';
+            
+            // Create particles with different sizes and positions
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random size between 5px and 80px
+                const size = Math.random() * 75 + 5;
+                
+                // Random position
+                const left = Math.random() * 100;
+                const top = Math.random() * 100;
+                
+                // Random animation properties
+                const delay = Math.random() * 15;
+                const duration = Math.random() * 10 + 20;
+                
+                // Random color variation
+                const hue = Math.random() * 30 + 230; // Purple range
+                const opacity = Math.random() * 0.2 + 0.05;
+                
+                // Apply styles
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${left}%`;
+                particle.style.top = `${top}%`;
+                particle.style.animationDelay = `${delay}s`;
+                particle.style.animationDuration = `${duration}s`;
+                particle.style.opacity = opacity;
+                particle.style.background = `radial-gradient(circle, hsla(${hue}, 100%, 70%, 0.3) 0%, hsla(${hue}, 100%, 50%, 0.1) 70%)`;
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        // Function to create gradient orbs
+        function createOrbs(count) {
+            const container = document.querySelector('.orbs-container');
+            if (!container) return;
+            
+            // Create additional orbs
+            for (let i = 0; i < count; i++) {
+                const orb = document.createElement('div');
+                orb.classList.add('orb');
+                
+                // Random size between 100px and 400px
+                const size = Math.random() * 300 + 100;
+                
+                // Random position
+                const left = Math.random() * 100;
+                const top = Math.random() * 100;
+                
+                // Random animation properties
+                const delay = Math.random() * 20;
+                const duration = Math.random() * 15 + 25;
+                
+                // Random color
+                const hue = Math.random() * 60 + 240; // Blue-purple range
+                
+                // Apply styles
+                orb.style.width = `${size}px`;
+                orb.style.height = `${size}px`;
+                orb.style.left = `${left}%`;
+                orb.style.top = `${top}%`;
+                orb.style.animationDelay = `${delay}s`;
+                orb.style.animationDuration = `${duration}s`;
+                orb.style.background = `radial-gradient(circle, hsla(${hue}, 100%, 65%, 0.15) 0%, hsla(${hue}, 100%, 45%, 0.05) 70%)`;
+                
+                container.appendChild(orb);
+            }
+        }
+        
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create particles and orbs
+            createParticles(35);
+            createOrbs(2); // Add 2 more orbs to existing ones
+            
+            // Create text shimmer effect
+            const title = document.querySelector('.gradient-text');
+            if (title) {
+                setInterval(() => {
+                    title.style.textShadow = `0 0 20px hsla(${Math.random() * 30 + 230}, 100%, 70%, 0.7)`;
+                }, 2000);
+            }
+            
+            // Auto-redirect after 2.5 seconds
+            setTimeout(() => {
+                // Add fade out animation
+                document.body.classList.add('fade-out');
+                
+                // Redirect after animation completes
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 500);
+            }, 2500);
+            
+            // Add some interactive effects
+            const logo = document.querySelector('.logo-3d');
+            if (logo) {
+                logo.addEventListener('mouseenter', () => {
+                    logo.style.animationDuration = '4s';
+                });
+                
+                logo.addEventListener('mouseleave', () => {
+                    logo.style.animationDuration = '8s';
+                });
+            }
+            
+            // Add keyboard shortcut for quick testing (Shift + S to skip)
+            document.addEventListener('keydown', (e) => {
+                if (e.shiftKey && e.key === 'S') {
+                    e.preventDefault();
+                    document.body.classList.add('fade-out');
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 300);
+                }
+            });
+            
+            // Add click-to-skip functionality
+            document.addEventListener('click', (e) => {
+                // Skip if user clicks anywhere (except for interactive elements)
+                if (!e.target.closest('.logo-3d')) {
+                    document.body.classList.add('fade-out');
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 300);
+                }
+            });
+            
+            // Display loading tips
+            const tips = [
+                "Preparing your learning environment...",
+                "Loading interactive modules...",
+                "Connecting to educational resources...",
+                "Personalizing your dashboard..."
+            ];
+            
+            const loadingText = document.querySelector('.loading-text');
+            let tipIndex = 0;
+            
+            if (loadingText) {
+                setInterval(() => {
+                    tipIndex = (tipIndex + 1) % tips.length;
+                    loadingText.textContent = tips[tipIndex];
+                }, 800);
+            }
+        });
+        
+        // Handle page visibility changes
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'visible') {
+                // Page became visible again
+                const particles = document.querySelectorAll('.particle');
+                particles.forEach(particle => {
+                    particle.style.animationPlayState = 'running';
+                });
+                
+                const orbs = document.querySelectorAll('.orb');
+                orbs.forEach(orb => {
+                    orb.style.animationPlayState = 'running';
+                });
+            } else {
+                // Page became hidden
+                const particles = document.querySelectorAll('.particle');
+                particles.forEach(particle => {
+                    particle.style.animationPlayState = 'paused';
+                });
+                
+                const orbs = document.querySelectorAll('.orb');
+                orbs.forEach(orb => {
+                    orb.style.animationPlayState = 'paused';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
