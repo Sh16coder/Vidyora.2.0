@@ -1117,6 +1117,464 @@
                 color: var(--gray-400);
             }
         }
+            /* Dashboard Styles */
+.dashboard-header {
+    background: var(--gradient-primary);
+    padding: 25px 40px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.dashboard-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+    background-size: cover;
+}
+
+.user-profile-mini {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.mini-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.user-info h3 {
+    font-size: 1.4rem;
+    margin: 0;
+    font-weight: 600;
+}
+
+.user-info p {
+    opacity: 0.9;
+    margin: 5px 0 0;
+    font-size: 0.9rem;
+}
+
+.logout-btn {
+    margin-left: auto;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 10px 20px;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+}
+
+.logout-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.dashboard-title {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.dashboard-title h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.dashboard-title p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.dashboard-content {
+    padding: 40px;
+    background: var(--gray-50);
+}
+
+.class-info-card {
+    background: white;
+    border-radius: var(--radius-xl);
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: var(--shadow-lg);
+    border-left: 5px solid var(--primary);
+}
+
+.class-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.class-icon {
+    width: 70px;
+    height: 70px;
+    background: var(--gradient-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 32px;
+    flex-shrink: 0;
+}
+
+.class-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: var(--gray-700);
+}
+
+.detail-value {
+    font-weight: 700;
+    color: var(--primary);
+    background: var(--gray-100);
+    padding: 5px 12px;
+    border-radius: var(--radius-md);
+}
+
+.subjects-section {
+    margin-bottom: 40px;
+}
+
+.subjects-section h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--dark);
+}
+
+.section-subtitle {
+    color: var(--gray-600);
+    margin-bottom: 25px;
+}
+
+.subjects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.subject-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 25px;
+    text-align: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid var(--gray-200);
+    position: relative;
+    overflow: hidden;
+}
+
+.subject-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--primary);
+}
+
+.subject-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-primary);
+}
+
+.subject-icon {
+    width: 70px;
+    height: 70px;
+    background: var(--gradient-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    color: white;
+    font-size: 32px;
+    transition: all 0.3s;
+}
+
+.subject-card:hover .subject-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.subject-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    color: var(--dark);
+}
+
+.subject-card p {
+    color: var(--gray-600);
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    min-height: 40px;
+}
+
+.subject-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s;
+}
+
+.subject-btn:hover {
+    background: var(--gradient-secondary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.quick-links {
+    margin-top: 40px;
+}
+
+.quick-links h2 {
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.quick-link {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 25px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.3s;
+    border: 2px solid var(--gray-200);
+}
+
+.quick-link:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.quick-link i {
+    font-size: 32px;
+    margin-bottom: 5px;
+}
+
+.quick-link span {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* Commerce Stream Specific */
+.subject-card.commerce {
+    border-color: #10b981;
+}
+
+.subject-card.commerce::before {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.subject-card.commerce .subject-icon {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+
+/* Science Stream Specific */
+.subject-card.science {
+    border-color: #3b82f6;
+}
+
+.subject-card.science::before {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+}
+
+.subject-card.science .subject-icon {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+}
+
+/* Responsive Dashboard */
+@media (max-width: 768px) {
+    .dashboard-header {
+        padding: 20px;
+    }
+    
+    .dashboard-title h1 {
+        font-size: 2rem;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .dashboard-content {
+        padding: 20px;
+    }
+    
+    .class-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .class-details {
+        grid-template-columns: 1fr;
+    }
+    
+    .subjects-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .links-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .user-profile-mini {
+        flex-wrap: wrap;
+    }
+    
+    .logout-btn {
+        width: 100%;
+        justify-content: center;
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-title h1 {
+        font-size: 1.6rem;
+    }
+    
+    .links-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .subject-card {
+        padding: 20px;
+    }
+                                 }
+        /* Dashboard Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes cardFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.subject-card {
+    animation: fadeInUp 0.6s ease-out forwards;
+    animation-delay: calc(var(--card-index, 0) * 0.1s);
+    opacity: 0;
+}
+
+.subject-card:hover {
+    animation: cardFloat 2s ease-in-out infinite;
+}
+
+/* Staggered animation for cards */
+.subjects-grid {
+    counter-reset: card-index;
+}
+
+.subject-card {
+    --card-index: counter(card-index);
+    counter-increment: card-index;
+}
+
+/* Loading animation for dashboard */
+.dashboard-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+}
+
+.loading-pulse {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    animation: pulse 1.5s ease-in-out infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+    
     </style>
 </head>
 <body>
@@ -1368,7 +1826,150 @@
             </div>
         </div>
     </div>
-
+<!-- Student Dashboard Screen -->
+<div id="dashboard-screen" class="screen">
+    <div class="dashboard-header">
+        <div class="user-profile-mini">
+            <div class="mini-avatar" id="dashboard-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="user-info">
+                <h3 id="dashboard-user-name">Student Name</h3>
+                <p id="dashboard-class-info">Class 9A</p>
+            </div>
+            <button class="logout-btn" id="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+        <div class="dashboard-title">
+            <h1><i class="fas fa-graduation-cap"></i> Academic Dashboard</h1>
+            <p id="dashboard-welcome">Welcome back! Here are your subjects</p>
+        </div>
+    </div>
+    
+    <div class="dashboard-content">
+        <div class="class-info-card">
+            <div class="class-header">
+                <div class="class-icon">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+                <div>
+                    <h3>Your Class Information</h3>
+                    <div class="class-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Class:</span>
+                            <span class="detail-value" id="detail-class">9A</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Teacher:</span>
+                            <span class="detail-value" id="detail-teacher">Mr. Sharma</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Stream:</span>
+                            <span class="detail-value" id="detail-stream">Science</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="subjects-section">
+            <h2><i class="fas fa-book-open"></i> Your Subjects</h2>
+            <p class="section-subtitle">Click on any subject to access learning materials</p>
+            
+            <div class="subjects-grid" id="subjects-grid">
+                <!-- Subjects will be dynamically inserted here -->
+                <div class="subject-card" data-subject="maths">
+                    <div class="subject-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h3>Mathematics</h3>
+                    <p>Algebra, Geometry, Calculus</p>
+                    <button class="subject-btn" onclick="openSubject('maths')">
+                        <i class="fas fa-external-link-alt"></i> Open Resources
+                    </button>
+                </div>
+                
+                <div class="subject-card" data-subject="physics">
+                    <div class="subject-icon">
+                        <i class="fas fa-atom"></i>
+                    </div>
+                    <h3>Physics</h3>
+                    <p>Mechanics, Thermodynamics</p>
+                    <button class="subject-btn" onclick="openSubject('physics')">
+                        <i class="fas fa-external-link-alt"></i> Open Resources
+                    </button>
+                </div>
+                
+                <div class="subject-card" data-subject="chemistry">
+                    <div class="subject-icon">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <h3>Chemistry</h3>
+                    <p>Organic, Inorganic, Physical</p>
+                    <button class="subject-btn" onclick="openSubject('chemistry')">
+                        <i class="fas fa-external-link-alt"></i> Open Resources
+                    </button>
+                </div>
+                
+                <div class="subject-card" data-subject="english">
+                    <div class="subject-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h3>English</h3>
+                    <p>Literature, Grammar, Writing</p>
+                    <button class="subject-btn" onclick="openSubject('english')">
+                        <i class="fas fa-external-link-alt"></i> Open Resources
+                    </button>
+                </div>
+                
+                <div class="subject-card" data-subject="hindi">
+                    <div class="subject-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3>Hindi</h3>
+                    <p>Language and Literature</p>
+                    <button class="subject-btn" onclick="openSubject('hindi')">
+                        <i class="fas fa-external-link-alt"></i> Open Resources
+                    </button>
+                </div>
+                
+                <div class="subject-card" data-subject="cs">
+                    <div class="subject-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Computer Science</h3>
+                    <p>Programming, Algorithms</p>
+                    <button class="subject-btn" onclick="openSubject('cs')">
+                        <i class="fas fa-external-link-alt"></i> Open Resources
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="quick-links">
+            <h2><i class="fas fa-rocket"></i> Quick Access</h2>
+            <div class="links-grid">
+                <a href="https://adminsblog.vercel.app/" target="_blank" class="quick-link">
+                    <i class="fas fa-blog"></i>
+                    <span>Study Blog</span>
+                </a>
+                <a href="#" class="quick-link" id="assignments-link">
+                    <i class="fas fa-tasks"></i>
+                    <span>Assignments</span>
+                </a>
+                <a href="#" class="quick-link" id="grades-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Grades</span>
+                </a>
+                <a href="#" class="quick-link" id="timetable-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Timetable</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
     <script>
         // Firebase Configuration - REPLACE WITH YOUR CONFIGURATION
         const firebaseConfig = {
@@ -1953,7 +2554,329 @@
                 }
             }
         });
+// Subject configurations based on class streams
+const subjectConfigs = {
+    // Science Stream (Classes 9A, 9B, 10A, 10B, 11A, 12A)
+    science: {
+        stream: "Science",
+        subjects: [
+            {
+                id: "maths",
+                name: "Mathematics",
+                description: "Algebra, Geometry, Calculus, Statistics",
+                icon: "fas fa-calculator",
+                color: "#3b82f6"
+            },
+            {
+                id: "physics",
+                name: "Physics",
+                description: "Mechanics, Thermodynamics, Optics, Modern Physics",
+                icon: "fas fa-atom",
+                color: "#ef4444"
+            },
+            {
+                id: "chemistry",
+                name: "Chemistry",
+                description: "Organic, Inorganic, Physical Chemistry",
+                icon: "fas fa-flask",
+                color: "#10b981"
+            },
+            {
+                id: "english",
+                name: "English",
+                description: "Literature, Grammar, Writing Skills",
+                icon: "fas fa-language",
+                color: "#8b5cf6"
+            },
+            {
+                id: "hindi",
+                name: "Hindi",
+                description: "Language, Literature, and Composition",
+                icon: "fas fa-book",
+                color: "#f59e0b"
+            },
+            {
+                id: "cs",
+                name: "Computer Science",
+                description: "Programming, Algorithms, Data Structures",
+                icon: "fas fa-code",
+                color: "#6366f1"
+            }
+        ]
+    },
+    
+    // Commerce Stream (Classes 11B, 12B)
+    commerce: {
+        stream: "Commerce",
+        subjects: [
+            {
+                id: "accounts",
+                name: "Accountancy",
+                description: "Financial Accounting, Corporate Accounts",
+                icon: "fas fa-file-invoice-dollar",
+                color: "#10b981"
+            },
+            {
+                id: "business",
+                name: "Business Studies",
+                description: "Management, Marketing, Finance",
+                icon: "fas fa-chart-line",
+                color: "#3b82f6"
+            },
+            {
+                id: "economics",
+                name: "Economics",
+                description: "Micro & Macro Economics, Statistics",
+                icon: "fas fa-chart-pie",
+                color: "#ef4444"
+            },
+            {
+                id: "english",
+                name: "English",
+                description: "Business Communication, Literature",
+                icon: "fas fa-language",
+                color: "#8b5cf6"
+            },
+            {
+                id: "hindi",
+                name: "Hindi",
+                description: "Language and Business Correspondence",
+                icon: "fas fa-book",
+                color: "#f59e0b"
+            },
+            {
+                id: "ip",
+                name: "Informatics Practices",
+                description: "Database, Networking, Web Development",
+                icon: "fas fa-laptop-code",
+                color: "#6366f1"
+            }
+        ]
+    }
+};
 
+// Class to stream mapping
+const classStreamMapping = {
+    '9A': 'science',
+    '9B': 'science', 
+    '10A': 'science',
+    '10B': 'science',
+    '11A': 'science',
+    '11B': 'commerce',
+    '12A': 'science',
+    '12B': 'commerce'
+};
+
+// Dashboard screen element
+const dashboardScreen = document.getElementById('dashboard-screen');
+
+// Function to show dashboard
+function showDashboard(userData) {
+    // Hide all other screens
+    [loginScreen, registerScreen, profileScreen].forEach(screen => {
+        screen.classList.remove('active');
+    });
+    
+    // Show dashboard
+    dashboardScreen.classList.add('active');
+    
+    // Update dashboard with user data
+    updateDashboard(userData);
+}
+
+// Update dashboard with user information
+async function updateDashboard(userData) {
+    const userClass = userData.class;
+    const streamType = classStreamMapping[userClass] || 'science';
+    const streamConfig = subjectConfigs[streamType];
+    
+    // Update user info
+    document.getElementById('dashboard-user-name').textContent = userData.fullName;
+    document.getElementById('dashboard-class-info').textContent = `Class ${userClass}`;
+    document.getElementById('dashboard-welcome').textContent = `Welcome back, ${userData.fullName.split(' ')[0]}!`;
+    
+    // Update class details
+    document.getElementById('detail-class').textContent = userClass;
+    document.getElementById('detail-teacher').textContent = userData.classTeacher;
+    document.getElementById('detail-stream').textContent = streamConfig.stream;
+    
+    // Update avatar with profile image if available
+    if (userData.profileImage) {
+        const avatar = document.getElementById('dashboard-avatar');
+        avatar.innerHTML = `<img src="${userData.profileImage}" alt="${userData.fullName}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+    }
+    
+    // Generate subject cards
+    generateSubjectCards(streamConfig.subjects, streamType);
+}
+
+// Generate subject cards based on stream
+function generateSubjectCards(subjects, streamType) {
+    const subjectsGrid = document.getElementById('subjects-grid');
+    subjectsGrid.innerHTML = '';
+    
+    subjects.forEach(subject => {
+        const card = document.createElement('div');
+        card.className = `subject-card ${streamType}`;
+        card.dataset.subject = subject.id;
+        
+        card.innerHTML = `
+            <div class="subject-icon" style="background: linear-gradient(135deg, ${subject.color}, ${darkenColor(subject.color, 20)})">
+                <i class="${subject.icon}"></i>
+            </div>
+            <h3>${subject.name}</h3>
+            <p>${subject.description}</p>
+            <button class="subject-btn" onclick="openSubject('${subject.id}')">
+                <i class="fas fa-external-link-alt"></i> Open Resources
+            </button>
+        `;
+        
+        subjectsGrid.appendChild(card);
+    });
+}
+
+// Helper function to darken color
+function darkenColor(color, percent) {
+    const num = parseInt(color.replace("#", ""), 16);
+    const amt = Math.round(2.55 * percent);
+    const R = (num >> 16) - amt;
+    const G = (num >> 8 & 0x00FF) - amt;
+    const B = (num & 0x0000FF) - amt;
+    return "#" + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+        (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
+        (B < 255 ? B < 1 ? 0 : B : 255)).toString(16).slice(1);
+}
+
+// Open subject resources
+function openSubject(subjectId) {
+    // Base URL for all subject resources
+    const baseUrl = 'https://adminsblog.vercel.app/';
+    
+    // You can customize URLs per subject if needed
+    const subjectUrls = {
+        'maths': baseUrl,
+        'physics': baseUrl,
+        'chemistry': baseUrl,
+        'english': baseUrl,
+        'hindi': baseUrl,
+        'cs': baseUrl,
+        'accounts': baseUrl,
+        'business': baseUrl,
+        'economics': baseUrl,
+        'ip': baseUrl
+    };
+    
+    const url = subjectUrls[subjectId] || baseUrl;
+    
+    // Open in new tab
+    window.open(url, '_blank');
+}
+
+// Logout functionality
+document.getElementById('logout-btn').addEventListener('click', async () => {
+    try {
+        await auth.signOut();
+        showScreen(loginScreen);
+        showMessage('login-success', 'Logged out successfully');
+        
+        // Clear dashboard
+        document.getElementById('dashboard-user-name').textContent = 'Student Name';
+        document.getElementById('dashboard-class-info').textContent = 'Class';
+        document.getElementById('dashboard-avatar').innerHTML = '<i class="fas fa-user"></i>';
+    } catch (error) {
+        console.error('Logout error:', error);
+    }
+});
+
+// Update the checkUserProfile function to redirect to dashboard
+async function checkUserProfile(uid) {
+    try {
+        const doc = await db.collection('users').doc(uid).get();
+        if (doc.exists && doc.data().profileCompleted) {
+            const userData = doc.data();
+            showDashboard(userData);
+        } else {
+            showScreen(profileScreen);
+            if (currentUser.email) {
+                document.getElementById('full-name').value = currentUser.displayName || '';
+            }
+        }
+    } catch (error) {
+        console.error("Error checking user profile:", error);
+        showMessage('login-error', 'Error loading profile. Please try again.');
+    }
+}
+
+// Update profile form submission to redirect to dashboard
+profileForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const fullName = document.getElementById('full-name').value.trim();
+    const studentClass = classSelect.value;
+    const phone = phoneInput.value.trim();
+    
+    if (!fullName || !studentClass || !phone) {
+        showMessage('profile-error', 'Please fill all required fields');
+        return;
+    }
+
+    if (!validatePhoneNumber(phone)) {
+        showMessage('profile-error', 'Invalid phone number');
+        return;
+    }
+
+    const btn = document.getElementById('complete-profile-btn');
+    btn.innerHTML = '<div class="spinner"></div> Saving Profile...';
+    btn.disabled = true;
+
+    try {
+        // Prepare user data (same as before)
+        const userData = {
+            uid: currentUser.uid,
+            email: currentUser.email,
+            fullName,
+            class: studentClass,
+            classTeacher: classTeachers[studentClass]?.name || 'Not Assigned',
+            phone: '+91' + phone,
+            profileCompleted: true,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            emailVerified: currentUser.emailVerified
+        };
+
+        // Add compressed image if available
+        if (compressedImageBase64) {
+            userData.profileImage = compressedImageBase64;
+            userData.imageSize = compressedImageSize;
+            userData.originalSize = originalImageSize;
+            userData.compressionRatio = Math.round((1 - compressedImageSize / originalImageSize) * 100);
+        }
+
+        // Save to Firestore
+        await db.collection('users').doc(currentUser.uid).set(userData, { merge: true });
+
+        // Update user display name
+        await currentUser.updateProfile({
+            displayName: fullName
+        });
+
+        showMessage('profile-success', 'Profile saved successfully!');
+        
+        // Redirect to dashboard instead of external page
+        setTimeout(() => {
+            showDashboard(userData);
+        }, 1500);
+
+    } catch (error) {
+        console.error('Profile save error:', error);
+        showMessage('profile-error', 'Error saving profile: ' + error.message);
+    } finally {
+        btn.innerHTML = '<i class="fas fa-check-circle"></i> Complete Profile';
+        btn.disabled = false;
+    }
+});
+
+// Initialize dashboard screen
+dashboardScreen.style.display = 'none';
         // Initialize the application
         console.log('EduSphere Pro Portal Initialized');
     </script>
