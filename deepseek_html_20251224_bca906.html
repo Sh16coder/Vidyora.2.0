@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maths Classroom | Mr. Ahmad</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Slab:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="circle" id="c1"></div>
+        <div class="circle" id="c2"></div>
+        <div class="circle" id="c3"></div>
+        <div class="circle" id="c4"></div>
+    </div>
+
+    <!-- Login Screen -->
+    <div id="loginScreen" class="screen active">
+        <div class="login-container">
+            <div class="logo-animation">
+                <i class="fas fa-square-root-alt math-icon"></i>
+                <h1 class="title-glitch">Maths Classroom</h1>
+                <p class="subtitle">Welcome to Mr. Ahmad's Digital Classroom</p>
+            </div>
+            
+            <div class="login-form slide-up">
+                <h2><i class="fas fa-sign-in-alt"></i> Student Login</h2>
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                </div>
+                <button id="loginBtn" class="btn-primary pulse">
+                    <i class="fas fa-paper-plane"></i> Enter Classroom
+                </button>
+                <p class="register-text">New student? <a href="#" id="showRegister">Register here</a></p>
+                
+                <div class="teacher-note">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <p>Teacher: Use <strong>mathsbyshakeel@gmail.com</strong></p>
+                </div>
+            </div>
+
+            <div class="login-form register-form" style="display: none;">
+                <h2><i class="fas fa-user-plus"></i> Student Registration</h2>
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="registerName" placeholder="Full Name" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="registerEmail" placeholder="Email Address" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="registerPassword" placeholder="Create Password (min. 6 chars)" required>
+                </div>
+                <button id="registerBtn" class="btn-primary">
+                    <i class="fas fa-user-check"></i> Register & Join
+                </button>
+                <p class="register-text">Already have account? <a href="#" id="showLogin">Login here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="screen">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <div class="logo-small">
+                    <i class="fas fa-square-root-alt"></i>
+                    <h2>Maths Classroom</h2>
+                </div>
+                <div class="user-welcome">
+                    <span id="userGreeting">Welcome back!</span>
+                    <div class="user-badge" id="userRoleBadge">
+                        <i class="fas fa-user-graduate"></i> Student
+                    </div>
+                </div>
+            </div>
+            
+            <div class="header-center">
+                <h1 class="teacher-name"><i class="fas fa-chalkboard-teacher"></i> Mr. Ahmad's Classroom</h1>
+            </div>
+            
+            <div class="header-right">
+                <div class="online-count">
+                    <i class="fas fa-users"></i>
+                    <span id="onlineCount">0</span> online
+                </div>
+                <button id="logoutBtn" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="main-nav">
+            <div class="nav-container">
+                <button class="nav-btn active" data-tab="community">
+                    <i class="fas fa-comments"></i>
+                    <span>Community</span>
+                </button>
+                <button class="nav-btn" data-tab="homework">
+                    <i class="fas fa-book"></i>
+                    <span>Homework</span>
+                </button>
+                <button class="nav-btn" data-tab="resources">
+                    <i class="fas fa-folder-open"></i>
+                    <span>Resources</span>
+                </button>
+                <button class="nav-btn" data-tab="doubts">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Doubts</span>
+                </button>
+                <button class="nav-btn" data-tab="students">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Students Online</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Community Tab -->
+            <div id="communityTab" class="tab-content active">
+                <div class="tab-header">
+                    <h2><i class="fas fa-comments"></i> Community Chat</h2>
+                    <p>Discuss with classmates and teacher</p>
+                </div>
+                
+                <div class="chat-container">
+                    <div class="messages-container" id="communityMessages">
+                        <!-- Messages load here -->
+                        <div class="empty-state">
+                            <i class="fas fa-comment-slash"></i>
+                            <p>No messages yet. Start the conversation!</p>
+                        </div>
+                    </div>
+                    
+                    <div class="message-input">
+                        <input type="text" id="communityMessage" placeholder="Type your message...">
+                        <button id="sendCommunityMsg" class="btn-send">
+                            <i class="fas fa-paper-plane"></i> Send
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Homework Tab -->
+            <div id="homeworkTab" class="tab-content">
+                <div class="tab-header">
+                    <h2><i class="fas fa-book"></i> Homework Assignments</h2>
+                    <p>Assigned by Mr. Ahmad</p>
+                </div>
+                
+                <div class="homework-container">
+                    <div id="homeworkList">
+                        <!-- Homework loads here -->
+                    </div>
+                    
+                    <!-- Teacher-only form -->
+                    <div id="teacherHomeworkForm" class="teacher-form" style="display: none;">
+                        <h3><i class="fas fa-plus-circle"></i> Assign New Homework</h3>
+                        <div class="form-group">
+                            <input type="text" id="homeworkTitle" placeholder="Homework Title">
+                        </div>
+                        <div class="form-group">
+                            <textarea id="homeworkDescription" placeholder="Detailed instructions..." rows="4"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input type="date" id="homeworkDueDate">
+                        </div>
+                        <button id="addHomeworkBtn" class="btn-primary">
+                            <i class="fas fa-paperclip"></i> Assign Homework
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resources Tab -->
+            <div id="resourcesTab" class="tab-content">
+                <div class="tab-header">
+                    <h2><i class="fas fa-folder-open"></i> Learning Resources</h2>
+                    <p>Study materials from Mr. Ahmad</p>
+                </div>
+                
+                <div class="resources-container">
+                    <div id="resourcesList">
+                        <!-- Resources load here -->
+                    </div>
+                    
+                    <!-- Teacher-only form -->
+                    <div id="teacherResourceForm" class="teacher-form" style="display: none;">
+                        <h3><i class="fas fa-plus-circle"></i> Add New Resource</h3>
+                        <div class="form-group">
+                            <input type="text" id="resourceTitle" placeholder="Resource Title">
+                        </div>
+                        <div class="form-group">
+                            <textarea id="resourceDescription" placeholder="Description..." rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input type="url" id="resourceLink" placeholder="Google Drive Link (shared link)">
+                        </div>
+                        <div class="form-group">
+                            <select id="resourceType">
+                                <option value="pdf">PDF Document</option>
+                                <option value="video">Video Lesson</option>
+                                <option value="worksheet">Worksheet</option>
+                                <option value="presentation">Presentation</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <button id="addResourceBtn" class="btn-primary">
+                            <i class="fas fa-cloud-upload-alt"></i> Add Resource
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Doubts Tab -->
+            <div id="doubtsTab" class="tab-content">
+                <div class="tab-header">
+                    <h2><i class="fas fa-question-circle"></i> Doubts & Solutions</h2>
+                    <p>Ask questions and get answers</p>
+                </div>
+                
+                <div class="doubts-container">
+                    <div class="ask-doubt">
+                        <h3><i class="fas fa-question"></i> Ask a Doubt</h3>
+                        <textarea id="doubtQuestion" placeholder="Type your doubt here..." rows="3"></textarea>
+                        <button id="askDoubtBtn" class="btn-primary">
+                            <i class="fas fa-paper-plane"></i> Submit Doubt
+                        </button>
+                    </div>
+                    
+                    <div id="doubtsList" class="doubts-list">
+                        <!-- Doubts load here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Students Tab -->
+            <div id="studentsTab" class="tab-content">
+                <div class="tab-header">
+                    <h2><i class="fas fa-user-friends"></i> Online Students</h2>
+                    <p>Students currently in the classroom</p>
+                </div>
+                
+                <div class="students-container">
+                    <div id="studentsList">
+                        <!-- Students load here -->
+                    </div>
+                    
+                    <div class="stats-card">
+                        <h3><i class="fas fa-chart-line"></i> Classroom Stats</h3>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <i class="fas fa-users"></i>
+                                <div>
+                                    <span class="stat-number" id="totalStudents">0</span>
+                                    <span class="stat-label">Total Students</span>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-comments"></i>
+                                <div>
+                                    <span class="stat-number" id="totalMessages">0</span>
+                                    <span class="stat-label">Messages Today</span>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-question-circle"></i>
+                                <div>
+                                    <span class="stat-number" id="totalDoubts">0</span>
+                                    <span class="stat-label">Active Doubts</span>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-book"></i>
+                                <div>
+                                    <span class="stat-number" id="totalHomework">0</span>
+                                    <span class="stat-label">Homework</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Notification System -->
+        <div id="notification" class="notification">
+            <i class="fas fa-bell"></i>
+            <span id="notificationText"></span>
+        </div>
+    </div>
+
+    <!-- Firebase & Google APIs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <!-- App Scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
