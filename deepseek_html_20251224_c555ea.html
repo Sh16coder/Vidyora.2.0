@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSphere Pro | Welcome</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@300;400;500&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <!-- Browser Image Compression -->
+    <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.min.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+</head>
+<body class="splash-screen">
+    <!-- Floating Particles Background -->
+    <div class="particles-container">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <!-- Add 30-40 particles with JS -->
+    </div>
+    
+    <!-- Main Content -->
+    <main class="splash-container">
+        <!-- 3D Rotating Graduation Cap -->
+        <div class="logo-3d-container">
+            <div class="logo-3d">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="glow-effect"></div>
+        </div>
+        
+        <!-- App Title with Glow -->
+        <div class="splash-title">
+            <h1 class="gradient-text">EduSphere<span class="pro-badge">Pro</span></h1>
+            <p class="splash-subtitle">Student Learning Portal</p>
+        </div>
+        
+        <!-- Animated Loading Bar -->
+        <div class="loading-container">
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+            <p class="loading-text">Initializing Experience...</p>
+        </div>
+        
+        <!-- Version & Copyright -->
+        <div class="splash-footer">
+            <p class="version">v1.0.0</p>
+            <p class="copyright">© 2024 EduSphere Pro. All rights reserved.</p>
+        </div>
+    </main>
+    
+    <!-- JavaScript -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/ui.js"></script>
+    <script>
+        // Create particles dynamically
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles(40);
+            
+            // Auto-redirect after 2.5 seconds
+            setTimeout(() => {
+                document.body.classList.add('fade-out');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 500);
+            }, 2500);
+        });
+    </script>
+</body>
+</html>
