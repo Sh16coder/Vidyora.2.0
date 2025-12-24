@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSphere Pro | Complete Profile</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@300;400;500&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Browser Image Compression -->
+    <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.min.js"></script>
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <style>
+        .profile-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            padding: var(--space-8) var(--space-4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .dark .profile-container {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+        
+        .profile-card {
+            width: 100%;
+            max-width: 600px;
+            background: var(--white);
+            border-radius: var(--radius-2xl);
+            padding: var(--space-10) var(--space-8);
+            box-shadow: var(--shadow-2xl);
+            animation: slideUp 0.6s ease-out;
+        }
+        
+        .dark .profile-card {
+            background: var(--dark-surface);
+        }
+        
+        .profile-header {
+            text-align: center;
+            margin-bottom: var(--space-8);
+        }
+        
+        .profile-title {
+            font-size: var(--text-3xl);
+            font-weight: 700;
+            margin-bottom: var(--space-2);
+        }
+        
+        .profile-subtitle {
+            color: var(--gray-500);
+            font-size: var(--text-lg);
+        }
+        
+        .dark .profile-subtitle {
+            color: var(--gray-400);
+        }
+        
+        .profile-form {
+            margin-bottom: var(--space-6);
+        }
+        
+        .profile-picture-section {
+            text-align: center;
+            margin-bottom: var(--space-8);
+        }
+        
+        .profile-picture-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: var(--space-4);
+        }
+        
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--white);
+            box-shadow: var(--shadow-xl);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 4rem;
+        }
+        
+        .profile-picture-placeholder {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 4rem;
+            cursor: pointer;
+            border: 4px solid var(--white);
+            box-shadow: var(--shadow-xl);
+            transition: all var(--transition-normal);
+        }
+        
+        .profile-picture-placeholder:hover {
+            transform: scale(1.05);
+        }
+        
+        .profile-picture-overlay {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: var(--primary);
+            color: var(--white);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+        
+        .profile-picture-overlay:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+        }
+        
+        .profile-picture-text {
+            color: var(--gray-600);
+            font-size: var(--text-sm);
+        }
+        
+        .dark .profile-picture-text {
+            color: var(--gray-400);
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .compression-progress {
+            margin-top: var(--space-4);
+            display: none;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background: var(--gray-200);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            margin-bottom: var(--space-2);
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: var(--text-sm);
+            color: var(--gray-600);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-6);
+            margin-bottom: var(--space-6);
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: var(--space-4);
+            }
+        }
+        
+        .class-teacher-info {
+            background: rgba(99, 102, 241, 0.05);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            margin-top: var(--space-2);
+            display: none;
+        }
+        
+        .dark .class-teacher-info {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+        
+        .class-teacher-info.show {
+            display: block;
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        .teacher-name {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .profile-btns {
+            display: flex;
+            gap: var(--space-4);
+            margin-top: var(--space-8);
+        }
+        
+        .profile-btns .btn {
+            flex: 1;
+        }
+        
+        .skip-btn {
+            background: var(--gray-200);
+            color: var(--gray-700);
+        }
+        
+        .dark .skip-btn {
+            background: var(--gray-700);
+            color: var(--gray-300);
+        }
+        
+        .skip-btn:hover {
+            background: var(--gray-300);
+        }
+        
+        .dark .skip-btn:hover {
+            background: var(--gray-600);
+        }
+        
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            padding: var(--space-3) var(--space-4);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-4);
+            display: none;
+            align-items: center;
+            gap: var(--space-2);
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        .error-message.show {
+            display: flex;
+        }
+        
+        .image-info {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: var(--accent);
+            padding: var(--space-3) var(--space-4);
+            border-radius: var(--radius-lg);
+            margin-top: var(--space-4);
+            display: none;
+            align-items: center;
+            gap: var(--space-2);
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        .image-info.show {
+            display: flex;
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: var(--space-2);
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-card">
+            <!-- Error Message -->
+            <div id="profileError" class="error-message">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>Error saving profile</span>
+            </div>
+            
+            <!-- Header -->
+            <div class="profile-header">
+                <h1 class="profile-title">Complete Your Profile</h1>
+                <p class="profile-subtitle">Tell us about yourself to get started</p>
+            </div>
+            
+            <!-- Profile Form -->
+            <form id="profileForm" class="profile-form">
+                <!-- Profile Picture Section -->
+                <div class="profile-picture-section">
+                    <div class="profile-picture-container">
+                        <div id="profilePicturePlaceholder" class="profile-picture-placeholder">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <img id="profilePicture" class="profile-picture" style="display: none;" alt="Profile Picture">
+                        <div class="profile-picture-overlay" id="changePictureBtn">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                    </div>
+                    <p class="profile-picture-text">Upload a profile picture (optional)</p>
+                    
+                    <!-- Image Info -->
+                    <div id="imageInfo" class="image-info">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Images are compressed to max 500KB and resized to 800px</span>
+                    </div>
+                    
+                    <!-- Compression Progress -->
+                    <div id="compressionProgress" class="compression-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span id="progressText">Compressing image...</span>
+                            <span id="progressPercent">0%</span>
+                        </div>
+                    </div>
+                    
+                    <input type="file" id="profileImageInput" class="file-input" accept="image/*">
+                </div>
+                
+                <!-- Form Fields -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fullName" class="form-label">Full Name *</label>
+                        <input type="text" id="fullName" class="form-input" placeholder="John Doe" required>
+                        <div class="form-error" id="nameError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone" class="form-label">Phone Number *</label>
+                        <input type="tel" id="phone" class="form-input" placeholder="+91 9876543210" required>
+                        <div class="form-error" id="phoneError"></div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="classSelect" class="form-label">Class *</label>
+                    <select id="classSelect" class="form-input" required>
+                        <option value="">Select your class</option>
+                        <optgroup label="Class 9">
+                            <option value="9A">9A</option>
+                            <option value="9B">9B</option>
+                        </optgroup>
+                        <optgroup label="Class 10">
+                            <option value="10A">10A</option>
+                            <option value="10B">10B</option>
+                        </optgroup>
+                        <optgroup label="Class 11">
+                            <option value="11A">11A</option>
+                            <option value="11B">11B</option>
+                        </optgroup>
+                        <optgroup label="Class 12">
+                            <option value="12A">12A</option>
+                            <option value="12B">12B</option>
+                        </optgroup>
+                    </select>
+                    
+                    <!-- Class Teacher Info -->
+                    <div id="classTeacherInfo" class="class-teacher-info">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        Class Teacher: <span class="teacher-name" id="teacherName">Loading...</span>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="profile-btns">
+                    <button type="button" class="btn skip-btn" id="skipBtn">
+                        <i class="fas fa-forward"></i>
+                        Skip for Now
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="saveProfileBtn">
+                        <i class="fas fa-save"></i>
+                        Save & Continue
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- JavaScript -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/profile.js"></script>
+    <script>
+        // Class teacher mapping
+        const classTeachers = {
+            '9A': 'Mrs. Sharma',
+            '9B': 'Mr. Verma',
+            '10A': 'Ms. Patel',
+            '10B': 'Mr. Singh',
+            '11A': 'Dr. Kumar',
+            '11B': 'Mrs. Gupta',
+            '12A': 'Mr. Joshi',
+            '12B': 'Ms. Reddy'
+        };
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const ui = window.ui || new UI();
+            let profileImageBase64 = null;
+            let originalFileSize = 0;
+            let compressedFileSize = 0;
+            
+            // Check if user is authenticated
+            firebase.auth().onAuthStateChanged((user) => {
+                if (!user) {
+                    window.location.href = 'login.html';
+                }
+            });
+            
+            // Profile picture click handlers
+            document.getElementById('profilePicturePlaceholder').addEventListener('click', () => {
+                document.getElementById('profileImageInput').click();
+            });
+            
+            document.getElementById('changePictureBtn').addEventListener('click', () => {
+                document.getElementById('profileImageInput').click();
+            });
+            
+            // Image upload handler
+            document.getElementById('profileImageInput').addEventListener('change', async function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                // Show image info
+                document.getElementById('imageInfo').classList.add('show');
+                
+                // Show compression progress
+                const progressDiv = document.getElementById('compressionProgress');
+                const progressFill = document.getElementById('progressFill');
+                const progressText = document.getElementById('progressText');
+                const progressPercent = document.getElementById('progressPercent');
+                
+                progressDiv.style.display = 'block';
+                originalFileSize = file.size;
+                
+                try {
+                    // Show initial progress
+                    progressText.textContent = 'Starting compression...';
+                    progressPercent.textContent = '0%';
+                    progressFill.style.width = '0%';
+                    
+                    // Compression options
+                    const options = {
+                        maxSizeMB: 0.5, // Max 500KB
+                        maxWidthOrHeight: 800, // Max dimension
+                        useWebWorker: true,
+                        onProgress: (progress) => {
+                            const percent = Math.round(progress);
+                            progressFill.style.width = `${percent}%`;
+                            progressPercent.textContent = `${percent}%`;
+                            progressText.textContent = `Compressing image... ${percent}%`;
+                        }
+                    };
+                    
+                    // Compress image
+                    const compressedFile = await imageCompression(file, options);
+                    compressedFileSize = compressedFile.size;
+                    
+                    // Update progress
+                    progressFill.style.width = '100%';
+                    progressPercent.textContent = '100%';
+                    progressText.textContent = 'Processing image...';
+                    
+                    // Convert to Base64
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        profileImageBase64 = e.target.result;
+                        
+                        // Update UI with preview
+                        const placeholder = document.getElementById('profilePicturePlaceholder');
+                        const img = document.getElementById('profilePicture');
+                        
+                        placeholder.style.display = 'none';
+                        img.src = profileImageBase64;
+                        img.style.display = 'block';
+                        
+                        // Update progress text with file size info
+                        const sizeReduction = Math.round((1 - compressedFileSize / originalFileSize) * 100);
+                        progressText.innerHTML = `
+                            Compression complete! <br>
+                            Original: ${ui.formatFileSize(originalFileSize)} → 
+                            Compressed: ${ui.formatFileSize(compressedFileSize)} 
+                            (${sizeReduction}% reduction)
+                        `;
+                        
+                        // Hide progress after 3 seconds
+                        setTimeout(() => {
+                            progressDiv.style.display = 'none';
+                        }, 3000);
+                    };
+                    reader.readAsDataURL(compressedFile);
+                    
+                } catch (error) {
+                    console.error('Image compression error:', error);
+                    progressText.textContent = 'Error compressing image. Using original file.';
+                    
+                    // Fallback: use original file as Base64
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        profileImageBase64 = e.target.result;
+                        
+                        const placeholder = document.getElementById('profilePicturePlaceholder');
+                        const img = document.getElementById('profilePicture');
+                        
+                        placeholder.style.display = 'none';
+                        img.src = profileImageBase64;
+                        img.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                    
+                    setTimeout(() => {
+                        progressDiv.style.display = 'none';
+                    }, 3000);
+                }
+            });
+            
+            // Class selection handler
+            document.getElementById('classSelect').addEventListener('change', function(e) {
+                const selectedClass = e.target.value;
+                const teacherInfo = document.getElementById('classTeacherInfo');
+                const teacherName = document.getElementById('teacherName');
+                
+                if (selectedClass && classTeachers[selectedClass]) {
+                    teacherName.textContent = classTeachers[selectedClass];
+                    teacherInfo.classList.add('show');
+                } else {
+                    teacherInfo.classList.remove('show');
+                }
+            });
+            
+            // Form submission
+            document.getElementById('profileForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const fullName = document.getElementById('fullName').value.trim();
+                const phone = document.getElementById('phone').value.trim();
+                const selectedClass = document.getElementById('classSelect').value;
+                
+                // Clear previous errors
+                document.getElementById('profileError').classList.remove('show');
+                document.getElementById('nameError').classList.remove('show');
+                document.getElementById('phoneError').classList.remove('show');
+                
+                // Validate name
+                if (!fullName) {
+                    document.getElementById('nameError').textContent = 'Full name is required';
+                    document.getElementById('nameError').classList.add('show');
+                    return;
+                }
+                
+                // Validate phone
+                if (!phone) {
+                    document.getElementById('phoneError').textContent = 'Phone number is required';
+                    document.getElementById('phoneError').classList.add('show');
+                    return;
+                }
+                
+                // Validate phone format
+                const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+                const cleanedPhone = phone.replace(/\D/g, '');
+                if (!phoneRegex.test(cleanedPhone)) {
+                    document.getElementById('phoneError').textContent = 'Please enter a valid phone number';
+                    document.getElementById('phoneError').classList.add('show');
+                    return;
+                }
+                
+                // Validate class
+                if (!selectedClass) {
+                    alert('Please select your class');
+                    return;
+                }
+                
+                // Show loading state
+                const saveBtn = document.getElementById('saveProfileBtn');
+                const originalText = saveBtn.innerHTML;
+                saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+                saveBtn.disabled = true;
+                
+                try {
+                    // Save profile to Firestore
+                    await saveProfileToFirestore(fullName, phone, selectedClass, profileImageBase64);
+                    
+                    // Redirect to dashboard
+                    window.location.href = 'dashboard.html';
+                    
+                } catch (error) {
+                    console.error('Profile save error:', error);
+                    
+                    // Show error message
+                    const errorDiv = document.getElementById('profileError');
+                    const errorSpan = errorDiv.querySelector('span');
+                    
+                    let userMessage = 'Error saving profile. Please try again.';
+                    if (error.message.includes('permission-denied')) {
+                        userMessage = 'Permission denied. Please contact support.';
+                    } else if (error.message.includes('network')) {
+                        userMessage = 'Network error. Please check your connection.';
+                    }
+                    
+                    errorSpan.textContent = userMessage;
+                    errorDiv.classList.add('show');
+                    
+                    // Reset button state
+                    saveBtn.innerHTML = originalText;
+                    saveBtn.disabled = false;
+                }
+            });
+            
+            // Skip button
+            document.getElementById('skipBtn').addEventListener('click', function() {
+                if (confirm('You can complete your profile later. Continue to dashboard?')) {
+                    window.location.href = 'dashboard.html';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
